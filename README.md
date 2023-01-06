@@ -1,7 +1,41 @@
 project-mlops
 ==============================
 
-Final project for the DTU course MLOps.
+# Project Report:
+
+This project will focus on applying co
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Project Organization
 ------------
@@ -50,7 +84,6 @@ Project Organization
     │       └── visualize.py
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
-
 
 --------
 
