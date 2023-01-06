@@ -28,11 +28,11 @@ def train (train_dataset, test_dataset, chosen_model = 'resnet18', batch_size = 
 
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    model = timm.create_model(chosen_model, pretrained=True)
-    model.to(DEVICE)
-
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset,batch_size=batch_size,shuffle=False)
+
+    model = timm.create_model(chosen_model, pretrained=True, num_classes=12)
+    model.to(DEVICE)
 
     optimizer = Adam(model.parameters(), lr=lr)
     loss_fn = torch.nn.CrossEntropyLoss()
