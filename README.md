@@ -1,5 +1,9 @@
 # Project description:
 
+s212834 César Delafargue
+s213242 Artur C. Fabrício
+s183685 Lucas Lyck
+
 - **Overall goal of the project**: The goal of this project is to implement a reproducible machine learning model, which can recognize different types of food in pictures. 
 
 - **What framework are you going to use (PyTorch Image Models, Transformer, Pytorch-Geometrics):** We intend on using [PyTorch Image Models](https://github.com/rwightman/pytorch-image-models) as our framework, since our problem is in the field of Computer Vision.
