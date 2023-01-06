@@ -1,0 +1,17 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: win-64
+@EXPLICIT
+https://repo.anaconda.com/pkgs/main/win-64/git-2.34.1-haa95532_0.conda
+https://repo.anaconda.com/pkgs/main/win-64/ca-certificates-2022.10.11-haa95532_0.conda
+https://repo.anaconda.com/pkgs/main/noarch/tzdata-2022c-h04d1e81_0.conda
+https://repo.anaconda.com/pkgs/main/win-64/vs2015_runtime-14.27.29016-h5e58377_2.conda
+https://repo.anaconda.com/pkgs/main/win-64/vc-14.2-h21ff451_1.conda
+https://repo.anaconda.com/pkgs/main/win-64/openssl-1.1.1s-h2bbff1b_0.conda
+https://repo.anaconda.com/pkgs/main/win-64/sqlite-3.39.2-h2bbff1b_0.conda
+https://repo.anaconda.com/pkgs/main/win-64/python-3.9.13-h6244533_1.conda
+https://repo.anaconda.com/pkgs/main/win-64/certifi-2022.9.24-py39haa95532_0.conda
+https://repo.anaconda.com/pkgs/main/noarch/wheel-0.37.1-pyhd3eb1b0_0.conda
+https://repo.anaconda.com/pkgs/main/win-64/wincertstore-0.2-py39haa95532_2.conda
+https://repo.anaconda.com/pkgs/main/win-64/setuptools-63.4.1-py39haa95532_0.conda
+https://repo.anaconda.com/pkgs/main/win-64/pip-22.1.2-py39haa95532_0.conda
