@@ -1,4 +1,4 @@
-How to setup enviorment and requirements: 
+How to setup environment and requirements: 
 
 1. Setup enviorment (Python version etc.) 
 
