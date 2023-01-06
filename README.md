@@ -1,8 +1,9 @@
 # Project description:
 
-s212834 César Delafargue
-s213242 Artur C. Fabrício
-s183685 Lucas Lyck
+*Developped by*
+s212834 César Delafargue \
+s213242 Artur C. Fabrício \
+s183685 Lucas Lyck \
 
 - **Overall goal of the project**: The goal of this project is to implement a reproducible machine learning model, which can recognize different types of food in pictures. 
 
