@@ -1,1 +1,3 @@
-print("Test test 123")
+import torch 
+
+print("Torch version", torch.__version__)
