@@ -15,16 +15,14 @@ sweep_configuration = {
 
 sweep_id = wandb.sweep(sweep=sweep_configuration, project='my-first-sweep')
 
-def compute_validation_metrics(model, dataloader):
-    ''' The prettiest function 🙂'''
-    model.eval()
-    total_loss = 0
-    total_acc = 0
-    with torch.no_grad():
-        for inputs, labels in dataloader:
-            outputs = model(inputs)
-            loss = loss_function(outputs, labels)
-            total_loss += loss.item()
-            _, preds = torch.max(outputs, dim=1)
-            total_acc += (preds == labels).sum().item()
-    return total_loss / len(dataloader), total_acc / len(dataloader)
+wandb.init()
+
+learning_rate  =  wandb.config.lr
+batch_size = wandb.config.batch_size
+epochs = wandb.config.epochs
+
+function = train(train_dataset, test_dataset,'resnet18', batch_size, epochs, learning_rate)
+
+wandb.agent(sweep_id, function=function, count=4)
+
+
