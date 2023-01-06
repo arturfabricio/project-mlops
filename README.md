@@ -1,4 +1,4 @@
-# Project Report:
+# Project description:
 
 - **Overall goal of the project**: The goal of this project is to implement a reproducible machine learning model, which can recognize different types of food in pictures. 
 
