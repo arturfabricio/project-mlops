@@ -1,0 +1,5 @@
+outs:
+- md5: df72b014020efaab054822202804d72b.dir
+  size: 369601526
+  nfiles: 6984
+  path: data
