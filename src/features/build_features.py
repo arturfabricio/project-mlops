@@ -3,16 +3,18 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import os
-import matplotlib.pyplot as plt
+import cv2 as cv2
 
-def load_image(dir):
-    return plt.imread(dir)
+dir_root = Path(__file__).parent.parent.parent
+dataset_raw_images = Path(dir_root, './data/processed/images')
+dataset_raw_labels = Path(dir_root, './data/processed/meta/train.json')
+
+def load_images(dir):
+    x = cv2.imread(str(dir))
+    x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
+    return x
 
 def prepare_data():
-    dir_root = Path(__file__).parent.parent.parent
-    dataset_raw_images = Path(dir_root, './data/processed/images')
-    dataset_raw_labels = Path(dir_root, './data/processed/meta/train.json')
-    
     used_classes = ['apple_pie','baby_back_ribs','beef_tartare', 
                 'caesar_salad','carrot_cake','chicken_wings', 'donuts',
                 'french_fries','grilled_salmon','lasagna','omelette',
@@ -20,11 +22,18 @@ def prepare_data():
 
     df = pd.read_json(dataset_raw_labels)
     df1 = df[used_classes]
-    df_final = pd.DataFrame(['images','labels'])
+    df_final = pd.DataFrame([])
+    print(df1.head())
+
+    for _class in used_classes: 
+        df1[_class] = df1.apply(lambda row: str(dataset_raw_images) + "/" + row[_class] + '.jpg', axis=1)
+        df_final.insert(0,'images',df1[_class])
 
     print(df1.head())
 
-    df_final['images'] = df1.apply(lambda column: load) 
+
+
+
 
     # with np.load(test_path) as data:
     #     test_images = data['images']
