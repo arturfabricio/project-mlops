@@ -12,10 +12,7 @@ dir_root = Path(__file__).parent.parent.parent
 dataset_raw_images = Path(dir_root, './data/processed/images')
 dataset_raw_labels = Path(dir_root, './data/processed/meta/train.json')
 dataset_raw_classes = Path(dir_root, './data/processed/meta/classes.txt')
-
 start_from_image: int = 0
-image_load_count: Union[int, bool] = 2
-
 
 def load_image(path):
     try:
@@ -26,8 +23,17 @@ def load_image(path):
         print("Image doesn't exist")
         return int(0)
 
-def prepare_data():
+def prepare_data(num_images: int, batchsize: int):
+    '''
+    Function that loads the data. You can input the number of images
+    you want to load, as well as the batch size for training.
 
+            num_images: amount of images to be loaded (must be int)
+            batchsize: batch size for the training (must be int)
+            return: dataloader for train and val, respectivelly
+    '''
+
+    image_load_count: Union[int, bool] = num_images
     df = pd.read_json(dataset_raw_labels)
     df_final = df.copy()
 
