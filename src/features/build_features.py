@@ -7,6 +7,7 @@ from torchvision import transforms
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from typing import Union
+from PIL import Image
 
 dir_root = Path(__file__).parent.parent.parent
 dataset_raw_images = Path(dir_root, './data/processed/images')
@@ -15,14 +16,11 @@ dataset_raw_classes = Path(dir_root, './data/processed/meta/classes.txt')
 start_from_image: int = 0
 
 def load_image(path):
-    try:
-        x = cv2.imread(str(path))
-        x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)  
-        return x
-    except:
-        print("Image doesn't exist")
-        return int(0)
-
+    # x = Image.open(path)
+    x = cv2.imread(str(path))
+    x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)  
+    return x
+ 
 def prepare_data(num_images: int, batchsize: int):
     '''
     Function that loads the data. You can input the number of images
@@ -40,8 +38,6 @@ def prepare_data(num_images: int, batchsize: int):
     for _class in df.columns: 
         df_final[_class] = df_final.apply(lambda row: str(dataset_raw_images) + "/" + row[_class] + '.jpg', axis=1)
     
-    print(df_final.columns)
-
     df_final = df_final.melt(value_name='images')
     df_final.rename(columns = {'variable':'label'}, inplace = True)
     
@@ -49,7 +45,6 @@ def prepare_data(num_images: int, batchsize: int):
         class_dict = dict()
         i = 0
         for line in f:
-            # if i < image_load_count:
             x = line.strip("\n").split(" ")
             key = x[0]
             value = i
@@ -58,8 +53,6 @@ def prepare_data(num_images: int, batchsize: int):
                 class_dict[key] = value
             else:
                 class_dict[key].append(value)
-
-    print(class_dict)
 
     if image_load_count != False:
         idxs = df_final.index.to_list()
@@ -70,10 +63,22 @@ def prepare_data(num_images: int, batchsize: int):
         df_final.drop(delete_before, axis=0, inplace=True)
         df_final.reset_index(inplace=True)
 
-    print(df_final.head())
+    print(len(df_final['label']))
+
     df_final['label'] = df_final['label'].apply(lambda x:  class_dict[x])
     df_final['images'] = df_final['images'].apply(lambda row:  load_image(row))
+
+    print(len(df_final['label']))
+    df_final.drop(['index'],axis=1)
+
     print(df_final.head())
+
+    preprocess = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])  
 
     class FoodDataset(Dataset):
         def __init__(self, images, labels):
@@ -86,13 +91,21 @@ def prepare_data(num_images: int, batchsize: int):
         def __getitem__(self, idx):
             return self.images[idx], self.labels[idx]
 
-    X_train, X_val, y_train, y_val = train_test_split(df_final['images'], df_final['label'], test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(df_final['images'], df_final['label'], test_size=0.2)
+
+    print(y_train)
+
+    print("Training images loaded: ", len(X_train+y_train))
+    print("Validation images loaded: ", len(X_val+y_val))
 
     train_dataset = FoodDataset(X_train, y_train)
-    train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True)
 
     val_dataset = FoodDataset(X_val, y_val)
-    val_dataloader = DataLoader(val_dataset, batch_size=64, shuffle=True)
+    val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True)
+
+    for idx, (data, image) in enumerate(train_dataloader):
+        print(idx)
 
     return train_dataloader, val_dataloader
 
