@@ -22,7 +22,7 @@ def compute_validation_metrics(model, dataloader, loss_fn):
     with torch.no_grad():
         for inputs, labels in dataloader:
             outputs = model(inputs)
-            probabilities = nn.functional.softmax(outputs, dim=1)
+            probabilities = torch.nn.Softmax(outputs, dim=1)
             loss = loss_fn(probabilities, labels)
             total_loss += loss.item()
             _, preds = torch.max(probabilities)
@@ -40,14 +40,11 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
 
     print("Running on: ", DEVICE)
 
-    model = timm.create_model(chosen_model, pretrained=True)
-    model.to(DEVICE)
-
     train_loader, val_loader = prepare_data(num_images,batch_size)
     print("Training batches loaded: ", len(train_loader))
     print("Validation batches loaded: ", len(val_loader))
 
-    model = timm.create_model(chosen_model, pretrained=True, num_classes = 12)
+    model = timm.create_model(chosen_model, pretrained=True, num_classes = 101)
     model.to(DEVICE)
 
     optimizer = Adam(model.parameters(), lr=lr)
@@ -62,7 +59,8 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
            
             optimizer.zero_grad()
 
-            output = model(inputs)
+            output_raw = model(inputs)
+            output = torch.nn.Softmax(output_raw, dim=1)
             loss = loss_fn(output,targets)
 
             loss.backward()
