@@ -28,8 +28,9 @@ def compute_validation_metrics(model, dataloader, loss_fn):
             total_acc += (preds == labels).sum().item()
     return total_loss / len(dataloader), total_acc / len(dataloader)
 
+
 # Training function
-def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_images=100):
+def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_images=400):
     ''' Trains a neural network from the TIMM framework'''
     
     print("Start training with: " + chosen_model)
@@ -40,9 +41,9 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
     model = timm.create_model(chosen_model, pretrained=True)
     model.to(DEVICE)
 
-    train_loader = prepare_data(num_images,batch_size)
+    train_loader, val_loader = prepare_data(num_images,batch_size)
     print("Training batches loaded: ", len(train_loader))
-    # print("Validation batches loaded: ", len(val_loader))
+    print("Validation batches loaded: ", len(val_loader))
 
     optimizer = Adam(model.parameters(), lr=lr)
     loss_fn = torch.nn.CrossEntropyLoss()
@@ -51,9 +52,7 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
         print("Epoch {i}/{j}...".format(i=epoch, j=epochs))
         overall_loss = 0
         model.train()
-        print('before train')
         for inputs, targets in train_loader:
-            print(' in the loop ')
             inputs, targets = inputs.to(DEVICE), targets.to(DEVICE)
            
             optimizer.zero_grad()
@@ -66,7 +65,8 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
 
         train_loss, train_acc = compute_validation_metrics(model,train_loader,loss_fn)
         print(train_loss, train_acc)
-        #val_loss, val_acc = compute_validation_metrics(model,val_loader,loss_fn)
+        val_loss, val_acc = compute_validation_metrics(model,val_loader,loss_fn)
+        print(val_loss, val_acc)
 
         # wandb.log({
         #     'epoch': epoch, 
@@ -75,6 +75,7 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
         #     'val_acc': val_acc, 
         #     'val_loss': val_loss
         # })
+        
         print('Average loss for epoch : {i}'.format(i=overall_loss/len(train_loader)))
     
     return model  

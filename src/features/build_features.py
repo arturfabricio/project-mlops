@@ -65,7 +65,6 @@ def prepare_data(num_images: int, batchsize: int):
         df_final.drop(delete_before, axis=0, inplace=True)
         df_final.reset_index(inplace=True)
 
-
     df_final['label'] = df_final['label'].apply(lambda x:  class_dict[x])
     df_final['images'] = df_final['images'].apply(lambda row:  load_image(row))
     df_final.drop(['index'],axis=1)
@@ -86,15 +85,15 @@ def prepare_data(num_images: int, batchsize: int):
             return len(self.images.index)
 
         def __getitem__(self, idx):
-            return preprocess(self.images[idx]), self.labels[idx]
+            return preprocess(self.images.iloc[idx]), self.labels.iloc[idx]
 
-    # X_train, X_val, y_train, y_val = train_test_split(df['images'], df['label'], test_size=0.2)
+    X_train, X_val, y_train, y_val = train_test_split(df_final['images'], df_final['label'], test_size=0.2,random_state=42)
 
-    train_dataset = FoodDataset(df_final['images'], df_final['label'])
+    train_dataset = FoodDataset(X_train, y_train)
     train_dataloader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True, drop_last=True)
 
-    # val_dataset = FoodDataset(X_val, y_val)
-    # val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True, drop_last=True)
+    val_dataset = FoodDataset(X_val, y_val)
+    val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True, drop_last=True)
 
-    return train_dataloader#, val_dataloader
+    return train_dataloader, val_dataloader
 
