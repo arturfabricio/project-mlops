@@ -4,6 +4,14 @@ import torch.nn as nn
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 import wandb
+import os
+import sys
+
+data_path = os.path.join(os.path.dirname(__file__), '../features')
+sys.path.append(os.path.abspath(data_path))
+
+# Import the data module
+from build_features import prepare_data
 
 #Defining the validation loss calculation that will be used in the training function
 def compute_validation_metrics(model, dataloader, loss_fn):
@@ -21,16 +29,23 @@ def compute_validation_metrics(model, dataloader, loss_fn):
             total_acc += (preds == labels).sum().item()
     return total_loss / len(dataloader), total_acc / len(dataloader)
 
+
 # Training function
-def train (train_dataset, test_dataset, chosen_model = 'resnet18', batch_size = 128, epochs = 5, lr = 0.01):
+def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_images=400):
     ''' Trains a neural network from the TIMM framework'''
     
-    print("Start training " + chosen_model)
+    print("Start training with: " + chosen_model)
 
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-    train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(dataset=test_dataset,batch_size=batch_size,shuffle=False)
+
+    print("Running on: ", DEVICE)
+
+    model = timm.create_model(chosen_model, pretrained=True)
+    model.to(DEVICE)
+
+    train_loader, val_loader = prepare_data(num_images,batch_size)
+    print("Training batches loaded: ", len(train_loader))
+    print("Validation batches loaded: ", len(val_loader))
 
     model = timm.create_model(chosen_model, pretrained=True, num_classes = 12)
     model.to(DEVICE)
@@ -41,32 +56,38 @@ def train (train_dataset, test_dataset, chosen_model = 'resnet18', batch_size = 
     for epoch in range(epochs):
         print("Epoch {i}/{j}...".format(i=epoch, j=epochs))
         overall_loss = 0
-        for images, labels in train_loader:
-            
+        model.train()
+        for inputs, targets in train_loader:
+            inputs, targets = inputs.to(DEVICE), targets.to(DEVICE)
+           
             optimizer.zero_grad()
-            output = model(images)
-            probabilities = nn.functional.softmax(output, dim=1)
-            loss = loss_fn(probabilities,labels)
+
+            output = model(inputs)
+            loss = loss_fn(output,targets)
+
             loss.backward()
             optimizer.step()
 
             overall_loss += loss.item()
 
-        train_loss, train_acc = compute_validation_metrics(model,train_loader)
-        val_loss, val_acc = compute_validation_metrics(model,test_loader)
+        train_loss, train_acc = compute_validation_metrics(model,train_loader,loss_fn)
+        print(train_loss, train_acc)
+        val_loss, val_acc = compute_validation_metrics(model,val_loader,loss_fn)
+        print(val_loss, val_acc)
 
-        wandb.log({
-            'epoch': epoch, 
-            'train_acc': train_acc,
-            'train_loss': train_loss, 
-            'val_acc': val_acc, 
-            'val_loss': val_loss
-        })
-
+        # wandb.log({
+        #     'epoch': epoch, 
+        #     'train_acc': train_acc,
+        #     'train_loss': train_loss, 
+        #     'val_acc': val_acc, 
+        #     'val_loss': val_loss
+        # })
+        
         print('Average loss for epoch : {i}'.format(i=overall_loss/len(train_loader)))
     
     return model  
 
+train()
 
 
 
