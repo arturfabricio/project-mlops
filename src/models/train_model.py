@@ -14,9 +14,10 @@ def compute_validation_metrics(model, dataloader, loss_fn):
     with torch.no_grad():
         for inputs, labels in dataloader:
             outputs = model(inputs)
-            loss = loss_fn(outputs, labels)
+            probabilities = nn.functional.softmax(outputs, dim=1)
+            loss = loss_fn(probabilities, labels)
             total_loss += loss.item()
-            _, preds = torch.max(outputs, dim=1)
+            _, preds = torch.max(probabilities)
             total_acc += (preds == labels).sum().item()
     return total_loss / len(dataloader), total_acc / len(dataloader)
 
@@ -31,7 +32,7 @@ def train (train_dataset, test_dataset, chosen_model = 'resnet18', batch_size = 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset,batch_size=batch_size,shuffle=False)
 
-    model = timm.create_model(chosen_model, pretrained=True, num_classes=12)
+    model = timm.create_model(chosen_model, pretrained=True, num_classes = 12)
     model.to(DEVICE)
 
     optimizer = Adam(model.parameters(), lr=lr)
@@ -44,7 +45,8 @@ def train (train_dataset, test_dataset, chosen_model = 'resnet18', batch_size = 
             
             optimizer.zero_grad()
             output = model(images)
-            loss = loss_fn(output,labels)
+            probabilities = nn.functional.softmax(output, dim=1)
+            loss = loss_fn(probabilities,labels)
             loss.backward()
             optimizer.step()
 
