@@ -22,10 +22,10 @@ def compute_validation_metrics(model, dataloader, loss_fn):
     with torch.no_grad():
         for inputs, labels in dataloader:
             outputs = model(inputs)
-            probabilities = torch.nn.Softmax(outputs, dim=1)
+            probabilities = torch.nn.Softmax(dim=1)(outputs)
             loss = loss_fn(probabilities, labels)
             total_loss += loss.item()
-            _, preds = torch.max(probabilities)
+            _, preds = torch.max(input=probabilities, dim=1)
             total_acc += (preds == labels).sum().item()
     return total_loss / len(dataloader), total_acc / len(dataloader)
 
@@ -51,7 +51,7 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
     loss_fn = torch.nn.CrossEntropyLoss()
 
     for epoch in range(epochs):
-        print("Epoch {i}/{j}...".format(i=epoch, j=epochs))
+        print("Epoch {i}/{j}...".format(i=epoch+1, j=epochs))
         overall_loss = 0
         model.train()
         for inputs, targets in train_loader:
@@ -60,7 +60,7 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
             optimizer.zero_grad()
 
             output_raw = model(inputs)
-            output = torch.nn.Softmax(output_raw, dim=1)
+            output = torch.nn.Softmax(dim=1)(output_raw)
             loss = loss_fn(output,targets)
 
             loss.backward()
@@ -69,9 +69,9 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
             overall_loss += loss.item()
 
         train_loss, train_acc = compute_validation_metrics(model,train_loader,loss_fn)
-        print(train_loss, train_acc)
+        print('train loss: {tl} '.format(tl=train_loss), 'train accuracy: {ta}'.format(ta=train_acc))
         val_loss, val_acc = compute_validation_metrics(model,val_loader,loss_fn)
-        print(val_loss, val_acc)
+        print('validation loss: {vl} '.format(vl=val_loss), 'validation accuracy: {va}'.format(va=val_acc))
 
         # wandb.log({
         #     'epoch': epoch, 
@@ -81,7 +81,7 @@ def train (chosen_model='resnet18', batch_size=64, epochs=2, lr=0.001, num_image
         #     'val_loss': val_loss
         # })
         
-        print('Average loss for epoch : {i}'.format(i=overall_loss/len(train_loader)))
+        print('Average loss for epoch {i}: {loss}'.format(i=epoch, loss=overall_loss/len(train_loader)))
     
     return model  
 

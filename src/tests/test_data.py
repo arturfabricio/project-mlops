@@ -28,7 +28,3 @@ def test_data():
     #assert that each label is represented == (3,256,256)
 
 
-    
-    
-test_data()    
- 
