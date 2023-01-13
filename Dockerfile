@@ -18,7 +18,7 @@ FROM python:3.9.11-slim
 #test
 # install python 
 RUN apt update && \
-    apt install --no-install-recommends -y build-essential gcc dvc && \
+    apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt
