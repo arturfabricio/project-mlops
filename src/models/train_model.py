@@ -61,3 +61,5 @@ def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=
         print('Average loss for epoch {i}: {loss}'.format(i=epoch+1, loss=overall_loss/len(train_loader)))
     return model  
 
+main()
+
