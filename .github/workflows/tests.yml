@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -18,6 +16,8 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+    - name: Set up dvc
+      uses: iterative/setup-dvc@v1    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -26,3 +26,7 @@ jobs:
       run: |
         pip install pytest
         pytest -v
+    - name: Get data
+      run: dvc pull
+      env:
+        GDRIVE_CREDENTIALS_DATA: ${{ secrets.GBUCKET_CREDENTIALS_DATA }}    

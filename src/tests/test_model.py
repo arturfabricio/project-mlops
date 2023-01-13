@@ -9,5 +9,5 @@ def test_model():
 
     output = model(train_data)
 
-    assert output.shape == (1,101)
+    assert output.shape == (1,101), "The output of the model does not have the right output dimension"
 
