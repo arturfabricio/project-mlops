@@ -6,14 +6,12 @@ RUN apt update && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt
-RUN dvc init
-RUN dvc pull
 COPY src/ src/
-COPY data/ data/
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 RUN dvc init
 RUN dvc pull
+COPY data/ data/
 
 ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
 
