@@ -15,7 +15,7 @@ RUN pip install dvc
 RUN pip install "dvc[all]"
 RUN ls
 # RUN cd project-mlops
-RUN dvc init
+RUN dvc init --no-scm
 # RUN dvc pull
 # COPY data/ data/
 
