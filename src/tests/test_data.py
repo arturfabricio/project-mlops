@@ -12,11 +12,11 @@ sys.path.append(os.path.abspath(data_path))
 
 from build_features import prepare_data
 
+@pytest.mark.skipif(
+    not os.path.exists('data/'),
+    reason='Data files not found, this should be tested locally',
+)
 def test_data():
-
-    if not os.path.exists('data/'):
-        print('Data files not found, this should be tested locally')
-        return True
 
     num_images = 2000
     batchsize = 128
@@ -29,10 +29,18 @@ def test_data():
     #assert that each datapoint has shape [3,224,224]
 
     bool = True 
-    for images, labels in train_data:
+    for images, _ in train_data:
         for image in images:
             bool and (image.shape == torch.Size([3, 224, 224]))
     assert bool, "The images don't have the right format" 
 
-    #assert that each label is represented == (3,256,256)
+    #assert that we have the right number of labels compared to the number of imported images
+
+    labels_set = set()
+    for _, labels in train_data:
+        for label in labels:
+            labels_set.add(label.item())   
+    assert (len(labels_set) == num_images//2 + 1)
+
+ 
 
