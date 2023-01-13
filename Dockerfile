@@ -10,5 +10,8 @@ COPY data/ data/
 COPY src/ src/
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
+RUN dvc pull data/
+COPY data/ /data/
 
 ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
+
