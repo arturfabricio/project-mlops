@@ -16,6 +16,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+        cache: 'pip' 
     - name: Set up dvc
       uses: iterative/setup-dvc@v1    
     - name: Install dependencies
@@ -25,8 +26,4 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        pytest -v
-    - name: Get data
-      run: dvc pull
-      env:
-        GDRIVE_CREDENTIALS_DATA: ${{ secrets.GBUCKET_CREDENTIALS_DATA }}    
+        pytest -v  
