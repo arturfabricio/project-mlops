@@ -19,5 +19,5 @@ RUN ls
 # RUN dvc pull
 # COPY data/ data/
 
-ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
+# ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
 
