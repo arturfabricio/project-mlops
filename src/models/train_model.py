@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 from torch.optim import Adam
 import matplotlib.pyplot as plt
-import wandb
 import os
 import sys
 
@@ -28,19 +27,14 @@ def compute_validation_metrics(model, dataloader):
     return total_loss / len(dataloader), 100. * correct / len(dataloader.dataset)
 
 # Training function
-def train (chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=100):
+def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=100):
     ''' Trains a neural network from the TIMM framework'''
     
     print("Start training with: " + chosen_model)
-
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
     print("Running on: ", DEVICE)
 
     train_loader, val_loader = prepare_data(num_images,batch_size)
-    print("Training batches loaded: ", len(train_loader))
-    print("Validation batches loaded: ", len(val_loader))
-
     model = timm.create_model(chosen_model, pretrained=True, num_classes = 101)
     model.to(DEVICE)
 
@@ -64,21 +58,6 @@ def train (chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_image
         print('train loss: {tl} '.format(tl=train_loss), 'train accuracy: {ta}'.format(ta=train_acc))
         val_loss, val_acc = compute_validation_metrics(model,val_loader)
         print('validation loss: {vl} '.format(vl=val_loss), 'validation accuracy: {va}'.format(va=val_acc))
-
-        # wandb.log({
-        #     'epoch': epoch, 
-        #     'train_acc': train_acc,
-        #     'train_loss': train_loss, 
-        #     'val_acc': val_acc, 
-        #     'val_loss': val_loss
-        # })
-        
         print('Average loss for epoch {i}: {loss}'.format(i=epoch+1, loss=overall_loss/len(train_loader)))
-
     return model  
-
-train()
-
-
-
 
