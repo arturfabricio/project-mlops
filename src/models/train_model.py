@@ -1,4 +1,5 @@
 import timm 
+import click
 import torch
 from torch.optim import Adam
 from torch.profiler import profile, ProfilerActivity, tensorboard_trace_handler
@@ -9,7 +10,14 @@ data_path = os.path.join(os.path.dirname(__file__), '../features')
 sys.path.append(os.path.abspath(data_path))
 from build_features import prepare_data
 
+models_path = os.path.join(os.path.dirname(__file__), '..../models')
+sys.path.append(os.path.abspath(models_path))
+
 with_profile = False ## Will have to add this to a click guard
+
+@click.group()
+def cli():
+    pass
 
 #Defining the validation loss calculation that will be used in the training function
 def compute_validation_metrics(model, dataloader):
@@ -27,16 +35,22 @@ def compute_validation_metrics(model, dataloader):
             correct += (preds == labels).sum().item()
     return total_loss / len(dataloader), 100. * correct / len(dataloader.dataset)
 
-# Training function
-def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=100):
+@click.command()
+@click.option("--lr", default=1e-3, help='learning rate to use for training')
+@click.option("--batch_size", default=64, help='learning rate to use for training')
+@click.option("--epochs", default=10, help='number of epcohs to use for training' )
+@click.option("--mdl", default='resnet18', help='model to be used')
+@click.option("--num_images",default=100, help="Number of images to use")
+@click.option("--save_model",default=False, help="Define if model should be saved (False=not save; True=save)")
+def main(mdl, batch_size, epochs, lr, num_images,save_model):
     ''' Trains a neural network from the TIMM framework'''
     
-    print("Start training with: " + chosen_model)
+    print("Start training with: " + mdl)
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on: ", DEVICE)
 
     train_loader, val_loader = prepare_data(num_images,batch_size)
-    model = timm.create_model(chosen_model, pretrained=True, num_classes = 101)
+    model = timm.create_model(mdl, pretrained=True, num_classes = 101)
     model.to(DEVICE)
     optimizer = Adam(model.parameters(), lr=lr)               
 
@@ -59,12 +73,21 @@ def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=
         val_loss, val_acc = compute_validation_metrics(model,val_loader)
         print('validation loss: {vl} '.format(vl=val_loss), 'validation accuracy: {va}'.format(va=val_acc))
         print('Average loss for epoch {i}: {loss}'.format(i=epoch+1, loss=overall_loss/len(train_loader)))
-        prof.step()
+        # prof.step()
+    if save_model == True:
+        torch.save(model.state_dict(), f"..../models/model_epochs{epochs}_lr{lr}_batch_size{batch_size}.pth")
+    
     return model  
 
-if with_profile == True: 
-    with profile(activities=[ProfilerActivity.CPU], record_shapes=True,on_trace_ready=tensorboard_trace_handler(f"./log/model")) as prof:
-        main(epochs=2)
-    print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total", row_limit=30))
-else:
-    main()
+cli.add_command(main)
+
+if __name__ == "__main__":
+    cli()
+
+
+# if with_profile == True: 
+#     with profile(activities=[ProfilerActivity.CPU], record_shapes=True,on_trace_ready=tensorboard_trace_handler(f"./log/model")) as prof:
+#         main(epochs=2)
+#     print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total", row_limit=30))
+# else:
+#     main()
