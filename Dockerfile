@@ -15,7 +15,7 @@
 # ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
 
 FROM python:3.9.11-slim
-
+#test
 # install python 
 RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc dvc && \
