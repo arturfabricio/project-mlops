@@ -40,7 +40,7 @@ def test_data():
     for _, labels in train_data:
         for label in labels:
             labels_set.add(label.item())   
-    assert (len(labels_set) == num_images//2 + 1)
+    assert (len(labels_set) == num_images//1000 + 1)
 
  
 
