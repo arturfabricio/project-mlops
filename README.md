@@ -19,6 +19,12 @@ Lucas Lyck (s183685)
     - [ResNet](https://arxiv.org/abs/1512.03385)
     - [VGG](https://arxiv.org/pdf/1409.1556.pdf)
 
+## Tools and Features Implemented in the Project:
+
+- **Data Version Control & Google Bucket Storage:** all our data is stored in a [Google Bucket](console.cloud.google.com/storage/browser/dtu-mlops-bucket-project), and fully integrated with DVC, meaning that with a simple `dvc pull`, all the data is easily downloadable. 
+
+- **Weights and Biases Sweep and Logging:** we provide a version of our training function, `main()`, where in which we take advantage of the `wandb` platform to log the results of our training, as well as performing a hyperparameter sweeping that allows us to check for the best hyperparameters for our model. To perform a training session with `wandb`, use [src/models/sweep_model.py](https://github.com/arturfabricio/project-mlops/blob/main/src/models/sweep_model.py).
+
 
 Project Organization
 ------------
