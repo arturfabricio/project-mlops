@@ -9,6 +9,8 @@ COPY requirements.txt requirements.txt
 COPY src/ src/
 COPY .dvc/ .dvc/
 COPY .dvcignore .dvcignore
+COPY .github/ .github/
+COPY .gitignore .gitignore
 WORKDIR /
 # RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install dvc
