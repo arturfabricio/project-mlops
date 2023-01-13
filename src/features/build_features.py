@@ -53,7 +53,7 @@ def prepare_data(num_images: int, batchsize: int):
             else:
                 class_dict[key].append(value)
 
-    print(class_dict)
+    #print(class_dict)
 
     if image_load_count != False:
         idxs = df_final.index.to_list()
@@ -89,10 +89,10 @@ def prepare_data(num_images: int, batchsize: int):
     X_train, X_val, y_train, y_val = train_test_split(df_final['images'], df_final['label'], test_size=0.2,random_state=42)
 
     train_dataset = FoodDataset(X_train, y_train)
-    train_dataloader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True, drop_last=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True)
 
     val_dataset = FoodDataset(X_val, y_val)
-    val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True, drop_last=True)
+    val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True)
 
     return train_dataloader, val_dataloader
 
