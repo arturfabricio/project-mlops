@@ -11,6 +11,7 @@ RUN apt update && \
 # COPY .dvcignore .dvcignore
 # COPY .github/ .github/
 # COPY .gitignore .gitignore
+RUN apt-get update && apt-get install -y git
 RUN git clone https://github.com/arturfabricio/project-mlops
 RUN ls
 WORKDIR /project-mlops
