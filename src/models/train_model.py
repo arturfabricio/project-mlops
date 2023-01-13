@@ -1,14 +1,15 @@
 import timm 
 import torch
-import torch.nn as nn
 from torch.optim import Adam
-import matplotlib.pyplot as plt
+from torch.profiler import profile, ProfilerActivity, tensorboard_trace_handler
 import os
 import sys
 
 data_path = os.path.join(os.path.dirname(__file__), '../features')
 sys.path.append(os.path.abspath(data_path))
 from build_features import prepare_data
+
+with_profile = False ## Will have to add this to a click guard
 
 #Defining the validation loss calculation that will be used in the training function
 def compute_validation_metrics(model, dataloader):
@@ -37,7 +38,6 @@ def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=
     train_loader, val_loader = prepare_data(num_images,batch_size)
     model = timm.create_model(chosen_model, pretrained=True, num_classes = 101)
     model.to(DEVICE)
-
     optimizer = Adam(model.parameters(), lr=lr)               
 
     for epoch in range(epochs):
@@ -59,7 +59,12 @@ def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=
         val_loss, val_acc = compute_validation_metrics(model,val_loader)
         print('validation loss: {vl} '.format(vl=val_loss), 'validation accuracy: {va}'.format(va=val_acc))
         print('Average loss for epoch {i}: {loss}'.format(i=epoch+1, loss=overall_loss/len(train_loader)))
+        prof.step()
     return model  
 
-main()
-
+if with_profile == True: 
+    with profile(activities=[ProfilerActivity.CPU], record_shapes=True,on_trace_ready=tensorboard_trace_handler(f"./log/model")) as prof:
+        main(epochs=2)
+    print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total", row_limit=30))
+else:
+    main()

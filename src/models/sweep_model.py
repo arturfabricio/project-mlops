@@ -1,8 +1,6 @@
 import timm 
 import torch
-import torch.nn as nn
 from torch.optim import Adam
-import matplotlib.pyplot as plt
 import wandb
 import os
 import sys
@@ -30,7 +28,7 @@ def compute_validation_metrics(model, dataloader):
 
 # Training function
 def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=100):
-    ''' Trains a neural network from the TIMM framework'''
+    ''' Trains a neural network from the TIMM framework (with sweep using wandb)'''
     
     print("Start training with: " + chosen_model)
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
