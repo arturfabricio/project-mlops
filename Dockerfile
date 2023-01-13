@@ -11,7 +11,7 @@ WORKDIR /
 # RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install dvc
 RUN pip install "dvc[all]"
-# RUN dvc init
+RUN dvc init
 RUN dvc pull
 COPY data/ data/
 
