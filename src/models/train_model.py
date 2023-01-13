@@ -17,9 +17,9 @@ print(dir_root)
 
 with_profile = False ## Will have to add this to a click guard
 
-@click.group()
-def cli():
-    pass
+# @click.group()
+# def cli():
+#     pass
 
 #Defining the validation loss calculation that will be used in the training function
 def compute_validation_metrics(model, dataloader):
@@ -37,14 +37,14 @@ def compute_validation_metrics(model, dataloader):
             correct += (preds == labels).sum().item()
     return total_loss / len(dataloader), 100. * correct / len(dataloader.dataset)
 
-@click.command()
-@click.option("--lr", default=1e-3, help='learning rate to use for training')
-@click.option("--batch_size", default=64, help='learning rate to use for training')
-@click.option("--epochs", default=10, help='number of epcohs to use for training' )
-@click.option("--mdl", default='resnet18', help='model to be used')
-@click.option("--num_images",default=100, help="Number of images to use")
-@click.option("--save_model",default=False, help="Define if model should be saved (False=not save; True=save)")
-def main(mdl, batch_size, epochs, lr, num_images,save_model):
+# @click.command()
+# @click.option("--lr", default=1e-3, help='learning rate to use for training')
+# @click.option("--batch_size", default=64, help='learning rate to use for training')
+# @click.option("--epochs", default=10, help='number of epcohs to use for training' )
+# @click.option("--mdl", default='resnet18', help='model to be used')
+# @click.option("--num_images",default=100, help="Number of images to use")
+# @click.option("--save_model",default=False, help="Define if model should be saved (False=not save; True=save)")
+def main(mdl='resnet18', batch_size=64, epochs=100, lr=1e3, num_images=101000,save_model=True):
     ''' Trains a neural network from the TIMM framework'''
     
     print("Start training with: " + mdl)
@@ -81,15 +81,15 @@ def main(mdl, batch_size, epochs, lr, num_images,save_model):
     
     return model  
 
-cli.add_command(main)
+# cli.add_command(main)
 
-if __name__ == "__main__":
-    cli()
+# if __name__ == "__main__":
+#     cli()
 
 
-# if with_profile == True: 
-#     with profile(activities=[ProfilerActivity.CPU], record_shapes=True,on_trace_ready=tensorboard_trace_handler(f"./log/model")) as prof:
-#         main(epochs=2)
-#     print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total", row_limit=30))
-# else:
-#     main()
+if with_profile == True: 
+    with profile(activities=[ProfilerActivity.CPU], record_shapes=True,on_trace_ready=tensorboard_trace_handler(f"./log/model")) as prof:
+        main(epochs=2)
+    print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total", row_limit=30))
+else:
+    main()
