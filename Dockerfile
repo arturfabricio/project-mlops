@@ -7,8 +7,8 @@ RUN apt update && \
 
 COPY requirements.txt requirements.txt
 COPY src/ src/
-WORKDIR /
 COPY data/ data/
+WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 RUN dvc init
 RUN dvc pull
