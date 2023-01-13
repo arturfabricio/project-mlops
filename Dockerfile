@@ -6,6 +6,7 @@ RUN apt update && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt
+COPY data/ data/
 COPY src/ src/
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
