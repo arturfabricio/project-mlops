@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y git
 RUN git clone https://github.com/arturfabricio/project-mlops
 RUN ls
 WORKDIR /project-mlops
-RUN git pull -rebase https://github.com/arturfabricio/project-mlops
+RUN git pull --rebase https://github.com/arturfabricio/project-mlops
 # RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install dvc
 RUN pip install "dvc[all]"
