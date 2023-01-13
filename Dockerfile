@@ -14,17 +14,13 @@
 
 # ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
 
+# Use a base image with Python 3.9.11
 FROM python:3.9.11-slim
-#test
-# install python 
+
+# install build-essential and gcc
 RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
     apt clean && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt requirements.txt
-COPY src/ src/
-WORKDIR /
-RUN pip install -r requirements.txt --no-cache-dir
 
 # install google cloud sdk
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
@@ -37,21 +33,16 @@ COPY service_account.json service_account.json
 ENV GOOGLE_APPLICATION_CREDENTIALS=/service_account.json
 RUN gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 
-# initialize DVC repository
-RUN dvc init
+# copy requirements.txt and project files
+COPY requirements.txt requirements.txt
+COPY src/ src/
 
-# add GCS as a remote storage
-RUN dvc remote add -d myremote gs://artifacts.mlopsproject-374511.appspot.com
+# install python dependencies
+WORKDIR /
+RUN pip install -r requirements.txt --no-cache-dir
 
-# add data to dvc
-RUN dvc add data/
-RUN dvc push
+# copy data from GCS bucket
+RUN gsutil -m cp -r gs://artifacts.mlopsproject-374511.appspot.com/* /data/
 
-# pull data from remote storage
-RUN dvc pull data/
-
-# copy data to the container
-COPY data/ /data/
-
-# run train script
+# run the training script
 ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
