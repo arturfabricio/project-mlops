@@ -44,7 +44,7 @@ def compute_validation_metrics(model, dataloader):
 # @click.option("--mdl", default='resnet18', help='model to be used')
 # @click.option("--num_images",default=100, help="Number of images to use")
 # @click.option("--save_model",default=False, help="Define if model should be saved (False=not save; True=save)")
-def main(mdl='resnet18', batch_size=64, epochs=30, lr=1e3, num_images=1000,save_model=True):
+def main(mdl='resnet18', batch_size=64, epochs=30, lr=1e3, num_images=400,save_model=True):
     ''' Trains a neural network from the TIMM framework'''
     
     print("Start training with: " + mdl)
