@@ -44,22 +44,26 @@ from pathlib import Path
 # load model
 dir_root = Path(__file__).parent.parent.parent
 model_path = Path(dir_root, './models/model_epochs10_lr1000.0_batch_size64.pth')
-image_path = Path(dir_root, './data/processed/images/apple_pie/134.jpg')
+image_path = Path(dir_root, './data/processed/images/apple_pie/3670548.jpg')
 dataset_raw_classes = Path(dir_root, './data/processed/meta/classes.txt')
 
+def load_class_dict(path): 
+    
+    with open(path, "r") as f:
+        class_dict = dict()
+        i = 0
+        for line in f:
+            x = line.strip("\n").split(" ")
+            key = x[0]
+            value = i
+            i = i+1
+            if key not in class_dict.keys():
+                class_dict[key] = value
+            else:
+                class_dict[key].append(value)
+    return class_dict
 
-with open(dataset_raw_classes, "r") as f:
-    class_dict = dict()
-    i = 0
-    for line in f:
-        x = line.strip("\n").split(" ")
-        key = x[0]
-        value = i
-        i = i+1
-        if key not in class_dict.keys():
-            class_dict[key] = value
-        else:
-            class_dict[key].append(value)
+class_dict = load_class_dict(dataset_raw_classes)
 
 print(class_dict)
 
