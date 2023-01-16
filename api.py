@@ -49,7 +49,7 @@ async def cv_model(model: UploadFile, image_file: UploadFile = File(...)):
     }
     
     with torch.no_grad():
-        output = model(img)
+        output = model(image)
     _, predicted = torch.max(output, 1)
     return response, {"predicted_class": predicted.item()}
 
