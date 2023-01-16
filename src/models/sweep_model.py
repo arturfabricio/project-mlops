@@ -27,7 +27,7 @@ def compute_validation_metrics(model, dataloader):
     return total_loss / len(dataloader), 100. * correct / len(dataloader.dataset)
 
 # Training function
-def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=700):
+def main(chosen_model='resnet18', batch_size=64, epochs=5, lr=0.001, num_images=500):
     ''' Trains a neural network from the TIMM framework (with sweep using wandb)'''
     
     print("Start training with: " + chosen_model)
@@ -84,7 +84,7 @@ sweep_configuration = {
 		},
     'parameters': {
         'batch_size': {'values': [16, 32, 64]},
-        'epochs': {'values': [2, 10, 30]},
+        'epochs': {'values': [5, 20, 50]},
         'lr': {'max': 0.1, 'min': 0.0001}
      }
 }
