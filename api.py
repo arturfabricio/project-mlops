@@ -67,4 +67,4 @@ async def cv_model(image_file: UploadFile = File(...)):
     object_name = list(class_dict.keys())[list(class_dict.values()).index(pred_label)]
 
     
-    return FileResponse('image_resize.jpg'), object_name
+    return object_name
