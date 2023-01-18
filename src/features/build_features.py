@@ -20,14 +20,13 @@ def load_image(path):
     # x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)  
     return x
  
-def prepare_data(num_images: int, batchsize: int):
+def prepare_data(num_images: int):
     '''
     Function that loads the data. You can input the number of images
-    you want to load, as well as the batch size for training.
+    you want to load.
 
             num_images: amount of images to be loaded (must be int)
-            batchsize: batch size for the training (must be int)
-            return: dataloader for train and val, respectivelly
+            return: arrays X_train, X_val, y_train, y_val in this order, containing the train and validation split for feature and target vectors. The images of the X vector are stored as a path to the local file and not loaded yet.
     '''
 
     image_load_count: Union[int, bool] = num_images
@@ -65,17 +64,28 @@ def prepare_data(num_images: int, batchsize: int):
         df_final.reset_index(inplace=True)
 
     df_final['label'] = df_final['label'].apply(lambda x:  class_dict[x])
-    df_final['images'] = df_final['images'].apply(lambda row:  load_image(row))
+    #df_final['images'] = df_final['images'].apply(lambda row:  load_image(row))
     df_final.drop(['index'],axis=1)
 
-    preprocess = transforms.Compose([
+    X_train, X_val, y_train, y_val = train_test_split(df_final['images'], df_final['label'], test_size=0.2,random_state=42)
+
+    #train_dataset = FoodDataset(X_train, y_train)
+    #train_dataloader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True, num_workers=2)
+
+    #val_dataset = FoodDataset(X_val, y_val)
+    #val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True)
+
+    return X_train, X_val, y_train, y_val
+
+
+preprocess = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])  
 
-    class FoodDataset(Dataset):
+class FoodDataset(Dataset):
         def __init__(self, images, labels):
             self.images = images
             self.labels = labels
@@ -84,15 +94,7 @@ def prepare_data(num_images: int, batchsize: int):
             return len(self.images.index)
 
         def __getitem__(self, idx):
-            return preprocess(self.images.iloc[idx]), self.labels.iloc[idx]
+            return preprocess(load_image(self.images.iloc[idx])), self.labels.iloc[idx]
 
-    X_train, X_val, y_train, y_val = train_test_split(df_final['images'], df_final['label'], test_size=0.2,random_state=42)
 
-    train_dataset = FoodDataset(X_train, y_train)
-    train_dataloader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True)
-
-    val_dataset = FoodDataset(X_val, y_val)
-    val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True)
-
-    return train_dataloader, val_dataloader
 
