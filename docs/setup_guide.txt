@@ -8,3 +8,7 @@ How to setup environment and requirements:
 
     python.exe -m pip install -r requirements.txt
 
+
+Test API: 
+curl -X 
+POST -F "image_file=@data\processed\images\gyoza\6276.jpg" http://localhost:8000/predict/
