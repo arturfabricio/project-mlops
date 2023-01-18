@@ -2,6 +2,7 @@ import timm
 import click
 import torch
 from torch.optim import Adam
+from torch.utils.data import DataLoader
 from torch.profiler import profile, ProfilerActivity, tensorboard_trace_handler
 import os
 import sys
@@ -9,7 +10,7 @@ from pathlib import Path
 
 data_path = os.path.join(os.path.dirname(__file__), '../features')
 sys.path.append(os.path.abspath(data_path))
-from build_features import prepare_data
+from build_features import prepare_data, FoodDataset
 
 dir_root = Path(__file__).parent.parent.parent
 print(dir_root)
@@ -44,14 +45,20 @@ def compute_validation_metrics(model, dataloader):
 # @click.option("--mdl", default='resnet18', help='model to be used')
 # @click.option("--num_images",default=100, help="Number of images to use")
 # @click.option("--save_model",default=False, help="Define if model should be saved (False=not save; True=save)")
-def main(mdl='resnet18', batch_size=64, epochs=10, lr=1e3, num_images=100,save_model=True):
+def main(mdl='resnet18', batch_size=64, epochs=10, lr=1e-3, num_images=100,save_model=True):
     ''' Trains a neural network from the TIMM framework'''
     
     print("Start training with: " + mdl)
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on: ", DEVICE)
 
-    train_loader, val_loader = prepare_data(num_images,batch_size)
+    X_train, X_val, y_train, y_val = prepare_data(num_images)
+    train_dataset = FoodDataset(X_train, y_train)
+    val_dataset = FoodDataset(X_val, y_val)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=3)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=3)
+    
+    
     model = timm.create_model(mdl, pretrained=True, num_classes = 101)
     model.to(DEVICE)
     optimizer = Adam(model.parameters(), lr=lr)               
@@ -86,10 +93,11 @@ def main(mdl='resnet18', batch_size=64, epochs=10, lr=1e3, num_images=100,save_m
 # if __name__ == "__main__":
 #     cli()
 
+if __name__ == "__main__":
 
-if with_profile == True: 
-    with profile(activities=[ProfilerActivity.CPU], record_shapes=True,on_trace_ready=tensorboard_trace_handler(f"./log/model")) as prof:
-        main(epochs=2)
-    print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total", row_limit=30))
-else:
-    main()
+    if with_profile == True: 
+        with profile(activities=[ProfilerActivity.CPU], record_shapes=True,on_trace_ready=tensorboard_trace_handler(f"./log/model")) as prof:
+            main(epochs=2)
+        print(prof.key_averages(group_by_input_shape=True).table(sort_by="cpu_time_total", row_limit=30))
+    else:
+        main(mdl='resnet18', batch_size=128, epochs=2, lr=1e-2, num_images=2000,save_model=False)
