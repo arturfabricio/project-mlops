@@ -44,7 +44,6 @@ async def cv_model(image_file: UploadFile = File(...)):
     img_tensor = transform(img).unsqueeze(0)
 
     img_np = np.array(img_tensor[0].permute(1, 2, 0))
-    cv2.imwrite('image_resize.jpg', img_np)
     image_file.file.close()
 
     class_dict = load_class_dict(dataset_raw_classes)
