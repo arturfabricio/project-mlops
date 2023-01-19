@@ -118,7 +118,7 @@ We extensively used the cookiecutter template (which we must add is a pretty nic
 >
 > Answer:
 
---- question 6 fill here ---
+We followed the Pep8 for our code to ensure our project complies with the official python style. We used flake8 to see where we had code that wasn't complient with this style, and used black to automatically reformat the code into the required style. This is important in large projects, as it ensures all developers are following the same coding practices, making it easy for them to understand and integrate new features in code written by others. It's akin to being in a group where everyone is speaking a different language - sure, with Google Translate we would eventually understand eachother, but if we all speak English, it's probably easier for everyone to understand :)
 
 ## Version control
 
@@ -300,7 +300,7 @@ Monitoring: Even though monitoring is a fairly new concept within machine learni
 
 
 
-Cloud storage buckets: This was mainly for handling the data. The data was also configured using DVC for version control. If we got the bloud functions to work, then the buckets would also be in charge of storing relavant models and other data for the function to run. 
+
 
 Compute Engine: The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions. If we had more money we would have setup multiple VM's using GPUs to train the model faster. 
 
@@ -326,7 +326,9 @@ Monitoring: We setup some basic monitoring, it was not deemed necesarry for the 
 > Answer:
 
 --- question 18 fill here ---
-The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions. If we had more money we would have setup multiple VM's using GPUs to train the model faster.
+
+The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions.
+If we had more money we would have setup multiple VM's using GPUs to train the model faster. So for this project and to illustrate that we understand the purpose we simply used the standard hardware which is: 1-2 vCPU and 4 GB memory. The VM was also created using a standard pytorch image.  
 
 ### Question 19
 
@@ -336,6 +338,8 @@ The compute engine was made used to actually train the model. Combining the VM's
 > Answer:
 
 --- question 19 fill here ---
+
+This was mainly for handling the data. The data was also configured using DVC for version control. If we got the cloud functions to work, then the buckets would also be in charge of storing relavant models and other data for the function to run. For this project we used Compute engines to train but it would also have been an option to use Vertex AI. For this we would need to upload the data inside a bucket not as DVC format. Even though DVC has its advanteges when it comes to changing dataset it is not necesarry for our dataset since its fixed.    
 
 ### Question 20
 
