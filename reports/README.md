@@ -73,7 +73,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 3 fill here ---
+We ended up using the TIMM framework, since our problem was one related to vision- We merely used the framework to load the needed models. To be honest, we didn't feel like it made much of a difference to use TIMM against something like torch.vision -  they seemed to be about the same thing. Although we recognize that TIMM has certain features we could have used, we ended up not doing so, as we felt they were not necessary for the scope of this project. None the less, we see the value in using third party frameworks, as these can help reduce the workload in setting up models, tests, schedulers, etc.
 
 ## Coding environment
 
@@ -92,7 +92,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 4 fill here ---
+We all worked in anaconda, so, to ensure we could all have similar environments, we created two files: environment.txt, which we use to create a template conda environment, and requirements.txt, which includes all the needed python dependencies. If someone were to create a environment similar to the one we used for this project, one would only have to run "conda create --name <env> --file environment.txt", to create the conda env, and then run "pip install -r requirements.txt" to install the proper dependencies. Also, as the course went on, we found ourselves using new dependenvies. To ensure we were all still working in the same env, we kep updating our requirements.txt file, and notify each other whenever there was a need for us to install new dependencies, which we did by running the aforementioned pip install command.
 
 ### Question 5
 
@@ -107,7 +107,7 @@ s213422, s183685, s212834
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+We extensively used the cookiecutter template (which we must add is a pretty nice template). We filed everything in subfolder /src, except /visualization, which we didn't use, so we removed it. We also removed /notebooks as we didn't use any Jupyter Notebooks. We also used the data folder to keep our data, but only the /processed subfolder. As we used DVC for our data, it was not needed to use the /raw folder, since the raw data is what we used for our model. We also added a few new scripts on the /src folder. Namely, we added a sweep_model.py script for using Weights and Biases functionalities, and we added a new subfolder to /src, /tests, which contains the scripts for the unittests.
 
 ### Question 6
 
@@ -118,7 +118,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 6 fill here ---
+We followed the Pep8 for our code to ensure our project complies with the official python style. We used flake8 to see where we had code that wasn't complient with this style, and used black to automatically reformat the code into the required style. This is important in large projects, as it ensures all developers are following the same coding practices, making it easy for them to understand and integrate new features in code written by others. It's akin to being in a group where everyone is speaking a different language - sure, with Google Translate we would eventually understand eachother, but if we all speak English, it's probably easier for everyone to understand :)
 
 ## Version control
 
@@ -129,9 +129,9 @@ s213422, s183685, s212834
 
 > **How many tests did you implement?**
 >
-> Answer:
+> Answer: 
 
---- question 7 fill here ---
+We implemented 2 tests functions, one for the model testing if the output of the model has the right format, and one for the data testing different things such as the shape of images or the number of unique labels. We tried to implement a test for the training function as well, with less success. 
 
 ### Question 8
 
@@ -144,9 +144,9 @@ s213422, s183685, s212834
 > *The total code coverage of code is X%, which includes all our source code. We are far from 100% coverage of our **
 > *code and even if we were then...*
 >
-> Answer:
+> Answer: 
 
---- question 8 fill here ---
+The total code coverage of the code is 70% according to the coverage report, including all the useful functions of the source code. If we tested the training function, we could reach a higher score. The data test function for example covers 98% of the data function with only one untested line. However, even if we reached 100% in total, the code wouldn't necessarily be error free as the coverage just checks how much of the code was run to get the test results, but doesn't evaluate if those tests are exhaustive enough or relevant. For example, if we test all the images that we get from the dataset class, by checking if they have the right shape, it will give good coverage while the image could in theory be filled with black pixels and not be properly loaded.
 
 ### Question 9
 
@@ -161,7 +161,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 9 fill here ---
+We ended up not using branches and pull requests. At the beggining, we did create an extra branch but quickly dropped it. Although we see the usefulness in large scale projects with many developers, we did use branches and pull requests, since we divided our tasks in such a way that there was barely any overlap in our coding. For example, one of us worked on the unit tests, so all the coding was done in the subfolder src/tests, while meanwhile another was working on the data modelling in src/features, and another on the model training in src/models. Since we were only three, and we mostly coded together in the same physical place, it was easy to keep track of eachothers progress, and ensure there was no overlap. Of course this wouldn't have been possible if we were a large MLOps teams of 20 or 30 people - there, without a doubt using branches can help, as the tasks are divided into their own self contained goals, and developers can work on different things in the same code at the same time, without breaking the whole pipeline - here pull requests will facilitate the integration of the code into one.
 
 ### Question 10
 
@@ -176,7 +176,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 10 fill here ---
+We used DVC mainly for a matter of simplyfying the data management process. In reality, it was not necessary to use DVC - our dataset was "static", in the sense that we didn't expect it to change throughout the project: we didn't antecipate any changes or extra data being added. None the less, despite us not really using the data version control benefits, which help you when you have data that can go through changes, we found it very helpful to remotely store our data and being able to pull it to a new machine with relative simplicity. In the case that our dataset was, for example, too small, DVC would be helpful in keeping track of new data added through time, and keeping old versions of the data easily accessible. 
 
 ### Question 11
 
@@ -192,7 +192,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 11 fill here ---
+--- question 11 fill here --- César
 
 ## Running code and tracking experiments
 
@@ -211,7 +211,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 12 fill here ---
+We initially used click to add values to our variables, such as the epochs, learning rate, model, etc. from the terminal, very much similar to the example above. In the very end, we ended up not doing this (hence why click options are commented in the train model script), due to us using Weights and Biases. A more thorough explanation of this can be found in the next question.
 
 ### Question 13
 
@@ -226,7 +226,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 13 fill here ---
+We didn't use any config files, as we had a slightly different approach to training our model, and ensuring reproducibility. As we used Weights and Biases, what we did was run the sweep_model.py script, which performed a hyperparameter sweep for our model. This helped us figure out which hyperparameters were most adequate to ensure a higher validation accuracy. From this, we then simply inputted the best hyperparameter set on the script for the training model. Furthermore, to keep track of each model trained, we named the resulting pytorch model dict based on the used learning rate, epochs and batch size.
 
 ### Question 14
 
@@ -243,7 +243,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 14 fill here ---
+--- question 14 fill here --- Artur (writting) + Lucas (picture)
 
 ### Question 15
 
@@ -258,7 +258,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 15 fill here ---
+--- question 15 fill here --- Lucas
 
 ### Question 16
 
@@ -273,7 +273,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 16 fill here ---
+--- question 16 fill here --- Artur
 
 ## Working in the cloud
 
@@ -290,7 +290,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 17 fill here ---
+Cloud storage buckets: This is used to store relevant data for your project this will most likely include models and training data. Compute Engine: Compute engines have multiple purposes, it can be used as a working enviorment for developing purposes but also to run multiple VM's in parallel. The VM's also have the option to run on either CPU or GPU which have different advantages. Cloud build: Cloud build can be used to connect a git repository to thus creating updated version of images as the code updates. These images are then stores inside the container registry. Monitoring: Even though monitoring is a fairly new concept within machine learning it is relevant to keep track of essential features when both training and deploying the model. 
 
 ### Question 18
 
@@ -305,7 +305,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 18 fill here ---
+The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions. If we had more money we would have setup multiple VM's using GPUs to train the model faster. So for this project and to illustrate that we understand the purpose we simply used the standard hardware which is: 1-2 vCPU and 4 GB memory. The VM was also created using a standard pytorch image.  
 
 ### Question 19
 
@@ -314,7 +314,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 19 fill here ---
+The bukcets were mainly for handling the data. The data was configured using DVC for version control. If we got the cloud functions to work, then the buckets would also be in charge of storing relavant models and other data for the function to run. For this project we used Compute engines to train but it would also have been an option to use Vertex AI. For this we would need to upload the data inside a bucket not as DVC format. Technically our dataset would not need DVC since its fixed. [Bucket image](figures/our_bucket.png) [Bucket data image](figures/our_bucket_data.png) 
 
 ### Question 20
 
@@ -323,7 +323,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 20 fill here ---
+For the container registry we only made one type of image which was in charge of handling the training. This was mainly done to get the vertex AI up and running, which unfortunatly did not happen. The training image still has its purpose since it can be run on a local machine or used to setup a desired VM. The images for the training is inside the folder called "mlops-final". For future implementation it would be a good idea to also make images in charge of the testing and inference. [this figure](figures/our_registry.png)
 
 ### Question 21
 
@@ -332,7 +332,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 21 fill here ---
+The GCP cloud build history can be seen here: [this figure](figures/our_build.png)
 
 ### Question 22
 
@@ -348,7 +348,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 22 fill here ---
+We manges to deploy the model but only locally. The API which was created simply uses an image as an input and then using our trained model will output the food type which it think it is. It was intented to get the model deployed to the cloud, but it showed to be a fairly difficult task for us. 
 
 ### Question 23
 
@@ -363,7 +363,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 23 fill here ---
+--- question 23 fill here --- Artur
 
 ### Question 24
 
@@ -377,7 +377,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 24 fill here ---
+--- question 24 fill here --- Lucas
 
 ## Overall discussion of project
 
@@ -398,7 +398,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 25 fill here ---
+--- question 25 fill here ---  Artur (writting) + Lucas (picture)
 
 ### Question 26
 
@@ -412,7 +412,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 26 fill here ---
+--- question 26 fill here --- All write about it
 
 ### Question 27
 
@@ -429,4 +429,4 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 27 fill here ---
+--- question 27 fill here --- Artur (data, dvc, model, train, wandb), César (model train, unit tests, continous integration), Lucas (GCP, docker, deployment) - Artur will write
