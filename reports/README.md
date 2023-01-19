@@ -92,7 +92,7 @@ We ended up using the TIMM framework, since our problem was one related to visio
 >
 > Answer:
 
-We all worked in anaconda, so, to ensure we could all have similar environments, we created two files: environment.txt, which we use to create a template conda environment, and requirements.txt, which includes all the needed python dependencies. If someone were to create a environment similar to the one we used for this project, one would only have to run "conda create --name <env> --file environment.txt", to create the conda env, and then run "pip install -r requirements.txt" to install the proper dependencies. Also, as the course went on, we found ourselves using new dependenvies. To ensure we were all still working in the same env, we kep updating our requirements.txt file, and notify each other whenever there was a need for us to install new dependencies, which we did by running the aforementioned pip install command.
+We all worked in Anaconda, so, to ensure we could all have similar environments, we created two files: environment.txt, which we use to create a template conda environment, and requirements.txt, which includes all the needed python dependencies. If someone were to create an environment similar to the one we used for this project, one would only have to run "conda create --name <env> --file environment.txt", to create the conda env, and then run "pip install -r requirements.txt" to install the proper dependencies. Also, as the course went on, we found ourselves using new dependencies. To ensure we were all still working in the same env, we kept updating our requirements.txt file, and notify each other whenever there was a need for us to install new dependencies, which we did by running the aforementioned pip install command.
 
 ### Question 5
 
@@ -192,7 +192,7 @@ We used DVC mainly for a matter of simplyfying the data management process. In r
 >
 > Answer:
 
---- question 11 fill here --- César
+We have organized our CI into 2 separate YAML files. The first one is used for testing and runs all the unit tests using the pytest library. The second one is used for linting the code. It first runs isort to sort the imports in each file of the source code, and then it runs flake8 on the source code to check if there are some formatting errors. For the unit testing, the process is run on 6 different configurations, with 3 different OS (Ubuntu, Windows, and macOS) and 2 different python versions (3.8 and 3.9). It also makes use of caching to accelerate the installation of pip libraries. However, the unit tests for data are skipped on GitHub actions as the data files cannot be accessed. The data folder is too heavy to be loaded and running "dvc pull" in the workflow file leads to a memory error. We thought about creating another bucket containing a subset of the data to reduce its size, but we did not have time to implement it. The linting workflow only runs once on Ubuntu and Python 3.8, and without cache, as we are only installing 2 pip libraries. Here are links to GitHub actions for each workflow file: [unit-testing](https://github.com/arturfabricio/project-mlops/actions/runs/3960456261), [linting](https://github.com/arturfabricio/project-mlops/actions/runs/3960644271).
 
 ## Running code and tracking experiments
 
@@ -258,7 +258,7 @@ The major use we gave to Weights and Biases (wandb) was on the aspect of perform
 >
 > Answer:
 
-The dokcer images was created for both training and inference. Since our dataset is as big as it is we had to exclude the day from the docker image which needs to be downloaded seperatly. For the training it simply just made it run the train script where the parameters are set within the python file. We figured that it would make the most sence to use weights and biases for now to calculate the best hyper parameters and then train it. The inference dockerfile simply just prints whatever food type the model think it is given an image.png which is given insde the image. For future implmentations it would ne nice to have some sort of automated pipeline which is able to train from the images given the latest best hyper parameters from Weight and Biases. Also being able to give inputs to the docker file so you could test the inference on different images. 
+The docker images were created for both training and inference. Since our dataset is as big as it is we had to exclude the day from the docker image which needs to be downloaded seperatly. For the training it simply just made it run the train script where the parameters are set within the python file. We figured that it would make the most sence to use weights and biases for now to calculate the best hyper parameters and then train it. The inference dockerfile simply just prints whatever food type the model think it is given an image.png which is given insde the image. For future implmentations it would ne nice to have some sort of automated pipeline which is able to train from the images given the latest best hyper parameters from Weight and Biases. Also being able to give inputs to the docker file so you could test the inference on different images. 
 
 
 --- question 15 fill here --- 
