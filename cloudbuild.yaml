@@ -3,3 +3,5 @@ steps:
      args: ['build', '-t', 'gcr.io/mlopsproject-374511/mlops-final', '.']
    - name: 'gcr.io/cloud-builders/docker'
      args: ['push', 'gcr.io/mlopsproject-374511/mlops-final']
+
+    
