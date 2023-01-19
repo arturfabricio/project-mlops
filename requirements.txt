@@ -267,3 +267,6 @@ wrapt==1.14.1
 yarl==1.8.2
 zc-lockfile==2.0
 zipp==3.8.1
+fastapi==0.45.0
+uvicorn[standard]==0.13.4
+python-multipart ==0.0.5
