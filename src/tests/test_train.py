@@ -1,6 +1,6 @@
 import os
 import sys
-import torch
+
 import pytest
 
 data_path = os.path.join(os.path.dirname(__file__), "../models")

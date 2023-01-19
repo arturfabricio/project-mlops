@@ -1,15 +1,17 @@
-import timm
-import torch
-from torch.optim import Adam
-import wandb
 import os
 import sys
+
+import timm
+import torch
+import wandb
+from torch.optim import Adam
 
 wandb.login()
 
 data_path = os.path.join(os.path.dirname(__file__), "../features")
 sys.path.append(os.path.abspath(data_path))
 from build_features import prepare_data
+
 
 # Defining the validation loss calculation that will be used in the training function
 def compute_validation_metrics(model, dataloader):

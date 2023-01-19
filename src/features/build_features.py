@@ -1,12 +1,11 @@
 from pathlib import Path
-from torch.utils.data import Dataset, DataLoader
-import pandas as pd
-import matplotlib.pyplot as plt
-from torchvision import transforms
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
 from typing import Union
+
+import pandas as pd
 from PIL import Image
+from sklearn.model_selection import train_test_split
+from torch.utils.data import Dataset
+from torchvision import transforms
 
 dir_root = Path(__file__).parent.parent.parent
 dataset_raw_images = Path(dir_root, "./data/processed/images")
@@ -17,8 +16,6 @@ start_from_image: int = 0
 
 def load_image(path):
     x = Image.open(path)
-    # x = cv2.imread(str(path))
-    # x = cv2.cvtColor(x, cv2.COLOR_BGR2RGB)
     return x
 
 
@@ -28,7 +25,9 @@ def prepare_data(num_images: int):
     you want to load.
 
             num_images: amount of images to be loaded (must be int)
-            return: arrays X_train, X_val, y_train, y_val in this order, containing the train and validation split for feature and target vectors. The images of the X vector are stored as a path to the local file and not loaded yet.
+            return: arrays X_train, X_val, y_train, y_val in this order, 
+            containing the train and validation split for feature and target vectors. 
+            The images of the X vector are stored as a path to the local file and not loaded yet.
     """
 
     image_load_count: Union[int, bool] = num_images
@@ -56,8 +55,6 @@ def prepare_data(num_images: int):
             else:
                 class_dict[key].append(value)
 
-    # print(class_dict)
-
     if image_load_count != False:
         idxs = df_final.index.to_list()
         delete_before = idxs[:(start_from_image)]
@@ -68,19 +65,12 @@ def prepare_data(num_images: int):
         df_final.reset_index(inplace=True)
 
     df_final["label"] = df_final["label"].apply(lambda x: class_dict[x])
-    # df_final['images'] = df_final['images'].apply(lambda row:  load_image(row))
     df_final.drop(["index"], axis=1)
 
     X_train, X_val, y_train, y_val = train_test_split(
         df_final["images"], df_final["label"], test_size=0.2, random_state=42
     )
-
-    # train_dataset = FoodDataset(X_train, y_train)
-    # train_dataloader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True, num_workers=2)
-
-    # val_dataset = FoodDataset(X_val, y_val)
-    # val_dataloader = DataLoader(val_dataset, batch_size=batchsize, shuffle=True)
-
+    
     return X_train, X_val, y_train, y_val
 
 

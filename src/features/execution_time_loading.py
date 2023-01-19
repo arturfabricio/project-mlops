@@ -1,8 +1,8 @@
-import numpy as np
 import time
-from build_features import prepare_data, FoodDataset
-from torch.utils.data import DataLoader
 
+import numpy as np
+from build_features import FoodDataset, prepare_data
+from torch.utils.data import DataLoader
 
 X_train, _, y_train, _ = prepare_data(10000, 128)
 train_dataset = FoodDataset(X_train, y_train)

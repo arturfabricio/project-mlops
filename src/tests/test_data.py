@@ -1,8 +1,8 @@
 import os
 import sys
-import torch
-import pytest
 
+import pytest
+import torch
 
 data_path = os.path.join(os.path.dirname(__file__), "../features")
 sys.path.append(os.path.abspath(data_path))
@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(data_path))
 
 # Import the data module
 
-from build_features import prepare_data, FoodDataset
+from build_features import FoodDataset, prepare_data
 
 
 @pytest.mark.skipif(

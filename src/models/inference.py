@@ -1,9 +1,9 @@
 
-import torch
-from torchvision import models
-from torchvision import transforms
-from PIL import Image
 from pathlib import Path
+
+import torch
+from PIL import Image
+from torchvision import models, transforms
 
 # load model
 dir_root = Path(__file__).parent.parent.parent

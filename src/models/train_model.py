@@ -1,16 +1,16 @@
-import timm
-import click
-import torch
-from torch.optim import Adam
-from torch.utils.data import DataLoader
-from torch.profiler import profile, ProfilerActivity, tensorboard_trace_handler
 import os
 import sys
 from pathlib import Path
 
+import timm
+import torch
+from torch.optim import Adam
+from torch.profiler import ProfilerActivity, profile, tensorboard_trace_handler
+from torch.utils.data import DataLoader
+
 data_path = os.path.join(os.path.dirname(__file__), "../features")
 sys.path.append(os.path.abspath(data_path))
-from build_features import prepare_data, FoodDataset
+from build_features import FoodDataset, prepare_data
 
 dir_root = Path(__file__).parent.parent.parent
 print(dir_root)
