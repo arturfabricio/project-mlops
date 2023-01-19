@@ -161,7 +161,7 @@ The total code coverage of the code is 70% according to the coverage report, inc
 >
 > Answer:
 
---- question 9 fill here ---
+We ended up not using branches and pull requests. At the beggining, we did create an extra branch but quickly dropped it. Although we see the usefulness in large scale projects with many developers, we did use branches and pull requests, since we divided our tasks in such a way that there was barely any overlap in our coding. For example, one of us worked on the unit tests, so all the coding was done in the subfolder src/tests, while meanwhile another was working on the data modelling in src/features, and another on the model training in src/models. Since we were only three, and we mostly coded together in the same physical place, it was easy to keep track of eachothers progress, and ensure there was no overlap. Of course this wouldn't have been possible if we were a large MLOps teams of 20 or 30 people - there, without a doubt using branches can help, as the tasks are divided into their own self contained goals, and developers can work on different things in the same code at the same time, without breaking the whole pipeline - here pull requests will facilitate the integration of the code into one.
 
 ### Question 10
 
@@ -176,7 +176,7 @@ The total code coverage of the code is 70% according to the coverage report, inc
 >
 > Answer:
 
-We used DVC mainly for a matter of simplyfying the data obtention process. We reality, it was not necessary to use DVC - our dataset was "static", in the sense that we didn't expect it to change throughout the project: we didn't antecipate any changes or extra data being added. None the less, despite us not really using the data version control benefits, which help you when you have data that can go through changes, we found it very helpful to remotely store our data and being able to pull it to a new machone with relative easiness. In the case our data set was for example, too small, DVC would be helpful in keepign track of new data added through time, and keep old versions of the data easily accessible. 
+We used DVC mainly for a matter of simplyfying the data management process. In reality, it was not necessary to use DVC - our dataset was "static", in the sense that we didn't expect it to change throughout the project: we didn't antecipate any changes or extra data being added. None the less, despite us not really using the data version control benefits, which help you when you have data that can go through changes, we found it very helpful to remotely store our data and being able to pull it to a new machine with relative simplicity. In the case that our dataset was, for example, too small, DVC would be helpful in keeping track of new data added through time, and keeping old versions of the data easily accessible. 
 
 ### Question 11
 
@@ -211,7 +211,7 @@ We used DVC mainly for a matter of simplyfying the data obtention process. We re
 >
 > Answer:
 
---- question 12 fill here ---
+We initially used click to add values to our variables, such as the epochs, learning rate, model, etc. from the terminal, very much similar to the example above. In the very end, we ended up not doing this (hence why click options are commented in the train model script), due to us using Weights and Biases. A more thorough explanation of this can be found in the next question.
 
 ### Question 13
 
@@ -226,7 +226,7 @@ We used DVC mainly for a matter of simplyfying the data obtention process. We re
 >
 > Answer:
 
---- question 13 fill here ---
+We didn't use any config files, as we had a slightly different approach to training our model, and ensuring reproducibility. As we used Weights and Biases, what we did was run the sweep_model.py script, which performed a hyperparameter sweep for our model. This helped us figure out which hyperparameters were most adequate to ensure a higher validation accuracy. From this, we then simply inputted the best hyperparameter set on the script for the training model. Furthermore, to keep track of each model trained, we named the resulting pytorch model dict based on the used learning rate, epochs and batch size.
 
 ### Question 14
 
@@ -299,19 +299,6 @@ Cloud build: Cloud build can be used to connect a git repository to thus creatin
 Monitoring: Even though monitoring is a fairly new concept within machine learning it is relevant to keep track of essential features when both training and deploying the model. 
 
 
-
-
-
-Compute Engine: The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions. If we had more money we would have setup multiple VM's using GPUs to train the model faster. 
-
-Cloud build: We linked our Git repository to the cloud so we could update our docker images. This also came in handy for making sure our images worked as intented since the google builder would made sure of that. 
-
-Monitoring: We setup some basic monitoring, it was not deemed necesarry for the scope of this project but the monitoring which is done is the "Number of bytes in ingested log entries"
-
-
-
---- question 17 fill here ---
-
 ### Question 18
 
 > **The backbone of GCP is the Compute engine. Explained how you made use of this service and what type of VMs**
@@ -325,8 +312,6 @@ Monitoring: We setup some basic monitoring, it was not deemed necesarry for the 
 >
 > Answer:
 
---- question 18 fill here ---
-
 The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions.
 If we had more money we would have setup multiple VM's using GPUs to train the model faster. So for this project and to illustrate that we understand the purpose we simply used the standard hardware which is: 1-2 vCPU and 4 GB memory. The VM was also created using a standard pytorch image.  
 
@@ -337,9 +322,7 @@ If we had more money we would have setup multiple VM's using GPUs to train the m
 >
 > Answer:
 
---- question 19 fill here ---
-
-This was mainly for handling the data. The data was also configured using DVC for version control. If we got the cloud functions to work, then the buckets would also be in charge of storing relavant models and other data for the function to run. For this project we used Compute engines to train but it would also have been an option to use Vertex AI. For this we would need to upload the data inside a bucket not as DVC format. Even though DVC has its advanteges when it comes to changing dataset it is not necesarry for our dataset since its fixed.    
+The bukcets were mainly for handling the data. The data was configured using DVC for version control. If we got the cloud functions to work, then the buckets would also be in charge of storing relavant models and other data for the function to run. For this project we used Compute engines to train but it would also have been an option to use Vertex AI. For this we would need to upload the data inside a bucket not as DVC format. Technically our dataset would not need DVC since its fixed. [Bucket image](figures/our_bucket.png) [Bucket data image](figures/our_bucket_data.png) 
 
 ### Question 20
 
@@ -348,7 +331,7 @@ This was mainly for handling the data. The data was also configured using DVC fo
 >
 > Answer:
 
---- question 20 fill here ---
+For the container registry we only made one type of image which was in charge of handling the training. This was mainly done to get the vertex AI up and running, which unfortunatly did not happen. The training image still has its purpose since it can be run on a local machine or used to setup a desired VM. The images for the training is inside the folder called "mlops-final". For future implementation it would be a good idea to also make images in charge of the testing and inference. [this figure](figures/our_registry.png)
 
 ### Question 21
 
@@ -357,7 +340,7 @@ This was mainly for handling the data. The data was also configured using DVC fo
 >
 > Answer:
 
---- question 21 fill here ---
+The GCP cloud build history can be seen here: [this figure](figures/our_build.png)
 
 ### Question 22
 
@@ -373,7 +356,7 @@ This was mainly for handling the data. The data was also configured using DVC fo
 >
 > Answer:
 
---- question 22 fill here ---
+We manges to deploy the model but only locally. The API which was created simply uses an image as an input and then using our trained model will output the food type which it think it is. It was intented to get the model deployed to the cloud, but it showed to be a fairly diffuc
 
 ### Question 23
 
