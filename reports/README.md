@@ -73,7 +73,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 3 fill here ---
+We ended up using the TIMM framework, since our problem was one related to vision- We merely used the framework to load the needed models. To be honest, we didn't feel like it made much of a difference to use TIMM against something like torch.vision -  they seemed to be about the same thing. Although we recognize that TIMM has certain features we could have used, we ended up not doing so.
 
 ## Coding environment
 
@@ -92,7 +92,7 @@ s213422, s183685, s212834
 >
 > Answer:
 
---- question 4 fill here ---
+We all worked in anaconda, so, to ensure we could all have similar environments, we created two files: environment.txt, which we use to create a template conda environment, and requirements.txt, which includes all the needed python dependencies. If someone were to create a environment similar to the one we used for this project, one would only have to run "conda create --name <env> --file environment.txt", to create the conda env, and then run "pip install -r requirements.txt" to install the proper dependenvies.
 
 ### Question 5
 
@@ -107,7 +107,7 @@ s213422, s183685, s212834
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+We extensively used the cookiecutter template (which we must add is a pretty nice template). We filed everything in subfolder /src, except /visualization, which we didn't use, so we removed it.
 
 ### Question 6
 
@@ -129,7 +129,7 @@ s213422, s183685, s212834
 
 > **How many tests did you implement?**
 >
-> Answer:
+> Answer: We implemented 2 tests functions, one for the model testing if the output of the model has the right format, and one for the data testing different things such as the shape of images or the number of unique labels. We tried to implement a test for the training function as well, with less success. 
 
 --- question 7 fill here ---
 
@@ -289,6 +289,14 @@ s213422, s183685, s212834
 > *We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...*
 >
 > Answer:
+We used the following services: 
+
+Cloud storage buckets: This was mainly for handling the data. The data was also configured using DVC for version control. If we got the bloud functions to work, then the buckets would also be in charge of storing relavant models and other data for the function to run. 
+
+Compute Engine: The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions. If we had more money we would have setup multiple VM's using GPUs to train the model faster. 
+
+
+
 
 --- question 17 fill here ---
 
