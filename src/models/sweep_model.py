@@ -1,20 +1,16 @@
-import os
-import sys
-
 import timm
 import torch
 import wandb
 from torch.optim import Adam
 from torch.utils.data import DataLoader
 
+
+from src.features.build_features import FoodDataset, prepare_data
+
 wandb.login()
 
-data_path = os.path.join(os.path.dirname(__file__), "../features")
-sys.path.append(os.path.abspath(data_path))
-from build_features import FoodDataset, prepare_data
 
-
-# Defining the validation loss calculation that will be used in the training function
+# Defining the validation loss calculation
 def compute_validation_metrics(model, dataloader):
     """ Gives the loss and the accuracy of a model one a certain test set"""
     model.eval()
@@ -28,18 +24,26 @@ def compute_validation_metrics(model, dataloader):
             total_loss += loss.item()
             _, preds = torch.max(input=output, dim=1)
             correct += (preds == labels).sum().item()
-    return total_loss / len(dataloader), 100.0 * correct / len(dataloader.dataset)
+        average_loss = total_loss / len(dataloader)
+        accuracy = 100.0 * correct / len(dataloader.dataset)
+        return average_loss, accuracy
 
 
 # Training function
-def main(chosen_model="resnet18", batch_size=64, epochs=5, lr=0.001, num_images=500):
-    """ Trains a neural network from the TIMM framework (with sweep using wandb)"""
+def main(
+    chosen_model="resnet18",
+    batch_size=64,
+    epochs=5,
+    lr=0.001,
+    num_images=500
+):
+    """ Trains a neural network (with sweep using wandb)"""
 
     print("Start training with: " + chosen_model)
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Running on: ", DEVICE)
 
-    run = wandb.init(project="my-first-sweep")
+    wandb.init(project="my-first-sweep")
     lr = wandb.config.lr
     batch_size = wandb.config.batch_size
     epochs = wandb.config.epochs

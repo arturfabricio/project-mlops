@@ -13,13 +13,14 @@ dir_root = Path(__file__).parent.parent.parent
 print(dir_root)
 
 
-with_profile = False  ## Will have to add this to a click guard
+with_profile = False  # Will have to add this to a click guard
 
 # @click.group()
 # def cli():
 #     pass
 
-# Defining the validation loss calculation that will be used in the training function
+
+# Defining the validation loss calculation
 def compute_validation_metrics(model, dataloader):
     """ Gives the loss and the accuracy of a model one a certain test set"""
     model.eval()
@@ -33,16 +34,18 @@ def compute_validation_metrics(model, dataloader):
             total_loss += loss.item()
             _, preds = torch.max(input=output, dim=1)
             correct += (preds == labels).sum().item()
-    return total_loss / len(dataloader), 100.0 * correct / len(dataloader.dataset)
+        average_loss = total_loss / len(dataloader)
+        accuracy = 100.0 * correct / len(dataloader.dataset)
+        return average_loss, accuracy
 
 
 # @click.command()
-# @click.option("--lr", default=1e-3, help='learning rate to use for training')
-# @click.option("--batch_size", default=64, help='learning rate to use for training')
-# @click.option("--epochs", default=10, help='number of epcohs to use for training' )
+# @click.option("--lr", default=1e-3, help='learning rate for training')
+# @click.option("--batch_size", default=64, help='batch size for training')
+# @click.option("--epochs", default=10, help='number of epochs for training' )
 # @click.option("--mdl", default='resnet18', help='model to be used')
 # @click.option("--num_images",default=100, help="Number of images to use")
-# @click.option("--save_model",default=False, help="Define if model should be saved (False=not save; True=save)")
+# @click.option("--save_model",default=False, help="If True, model is saved")
 def main(
     mdl="resnet18",
     batch_size=64,
@@ -104,11 +107,7 @@ def main(
     if save_model:
         pth = f"models/model_epochs{epochs}_lr{lr}_batch_size{batch_size}.pth"
         torch.save(
-            model.state_dict(),
-            os.path.join(
-                dir_root,
-                pth,
-            ),
+            model.state_dict(), os.path.join(dir_root, pth,),
         )
 
     return model
