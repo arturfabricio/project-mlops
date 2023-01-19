@@ -70,7 +70,7 @@ def prepare_data(num_images: int):
     X_train, X_val, y_train, y_val = train_test_split(
         df_final["images"], df_final["label"], test_size=0.2, random_state=42
     )
-    
+
     return X_train, X_val, y_train, y_val
 
 
