@@ -31,8 +31,6 @@ def load_class_dict(path):
 
 class_dict = load_class_dict(dataset_raw_classes)
 
-print(class_dict)
-
 model = models.resnet18(pretrained=True)
 num_ftrs = model.fc.in_features
 model.fc = torch.nn.Linear(num_ftrs, 101)
