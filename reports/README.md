@@ -420,6 +420,8 @@ Lucas, I haven't written cause I think I need to look at the image you will make
 
 One of the challenges we initially faced in the project was setting up DVC, since we initially set everything up on Google Drive, which was a mess as each of us had to log into one Google account to have the permissions to access the data. Furthermore, we initially couldn't even get DVC to work in Google Drive at all. Despite this, we solved the issue by migrating our data to a GCS Bucket, and making the bucket public, which made it easy for everyone to access it. We initially also struggled a bit with implementing the Weights and Biases features on the code (just as we had on the exercises). We then figured that the order where in which we call each wandb command is crucial for the features to work, so we eventually fixed the issue. (add more guys)
 
+Docker, GCP and deployment were all somewhat new areas for all of us which made some part quite a big challenge, and also led to some unfinished parts. Getting the cloud functions to work was definitly the biggest challenge, never having done any deployment before it made it a bit hard to just get it done locally. Even though there are alot of logs to look at for the cloud functoin for debugging it would often give a very unspecific error which is hard to debug without experience. It was also a bit of mess understanding the pipeline for the docker building and pushing. We had problems getting multiple triggers to work at the same time which lead to only one trigger active for the training and the the inference not. 
+
 ### Question 27
 
 > **State the individual contributions of each team member. This is required information from DTU, because we need to**
