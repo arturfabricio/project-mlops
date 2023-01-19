@@ -19,11 +19,11 @@ jobs:
       - name: Run isort
         run: |
           pip install isort
-          isort .    
+          isort src/   
       - name: Run flake8
         run: |
           pip install flake8
-          flake8 . 
+          flake8 src/ 
       
      
               
