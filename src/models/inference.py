@@ -1,40 +1,4 @@
-# import torch
-# from torchvision import transforms
-# from PIL import Image
-# import os
-# from pathlib import Path
 
-
-# # load model
-# dir_root = Path(__file__).parent.parent.parent
-# model_path = Path(dir_root, './models/model_epochs10_lr1000.0_batch_size64.pth')
-# image_path = Path(dir_root, './data/processed/images/apple_pie/134.jpg')
-# print(model_path)
-# print(image_path)
-# #model = torch.load(model_path)
-# # model.eval()
-# model = torch.load(model_path, map_location=torch.device('cpu'))
-# #model = model['model']
-
-
-# # define image transform
-# transform = transforms.Compose([transforms.Resize(256),
-#                                 transforms.CenterCrop(224),
-#                                 transforms.ToTensor(),
-#                                 transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
-
-# # open image and transform
-# img = Image.open(image_path)
-# img_tensor = transform(img).unsqueeze(0)
-
-# # run inference
-# output = model(img_tensor)
-
-# # get class with highest probability
-# _, pred = output.max(1)
-
-# # print class label
-# print(pred.item())
 import torch
 from torchvision import models
 from torchvision import transforms
