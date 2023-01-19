@@ -23,4 +23,4 @@ if __name__ == "__main__":
         res.append(end - start)
 
     res = np.array(res)
-    print("Execution time: {mean} +- {std}".format(mean=np.mean(res), std=np.std(res)))
+    print(f"Execution time: {np.mean(res)} +- {np.std(res)}")

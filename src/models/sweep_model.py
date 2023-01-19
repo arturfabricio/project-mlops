@@ -5,12 +5,13 @@ import timm
 import torch
 import wandb
 from torch.optim import Adam
+from torch.utils.data import DataLoader
 
 wandb.login()
 
 data_path = os.path.join(os.path.dirname(__file__), "../features")
 sys.path.append(os.path.abspath(data_path))
-from build_features import prepare_data
+from build_features import FoodDataset, prepare_data
 
 
 # Defining the validation loss calculation that will be used in the training function
@@ -43,7 +44,16 @@ def main(chosen_model="resnet18", batch_size=64, epochs=5, lr=0.001, num_images=
     batch_size = wandb.config.batch_size
     epochs = wandb.config.epochs
 
-    train_loader, val_loader = prepare_data(num_images, batch_size)
+    X_train, X_val, y_train, y_val = prepare_data(num_images)
+    train_dataset = FoodDataset(X_train, y_train)
+    val_dataset = FoodDataset(X_val, y_val)
+    train_loader = DataLoader(
+        train_dataset, batch_size=batch_size, shuffle=True, num_workers=3
+    )
+    val_loader = DataLoader(
+        val_dataset, batch_size=batch_size, shuffle=True, num_workers=3
+    )
+
     model = timm.create_model(chosen_model, pretrained=True, num_classes=101)
     model.to(DEVICE)
 

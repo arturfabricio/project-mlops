@@ -24,10 +24,11 @@ def prepare_data(num_images: int):
     Function that loads the data. You can input the number of images
     you want to load.
 
-            num_images: amount of images to be loaded (must be int)
-            return: arrays X_train, X_val, y_train, y_val in this order, 
-            containing the train and validation split for feature and target vectors. 
-            The images of the X vector are stored as a path to the local file and not loaded yet.
+        num_images: amount of images to be loaded (must be int)
+        return: arrays X_train, X_val, y_train, y_val in
+        this order, containing the train and validation split
+        for feature and target vectors. The images of the X vector
+        are stored as a path to the local file and not loaded yet.
     """
 
     image_load_count: Union[int, bool] = num_images
@@ -36,7 +37,8 @@ def prepare_data(num_images: int):
 
     for _class in df.columns:
         df_final[_class] = df_final.apply(
-            lambda row: str(dataset_raw_images) + "/" + row[_class] + ".jpg", axis=1
+            lambda row: str(dataset_raw_images) + "/" + row[_class] + ".jpg",
+            axis=1
         )
 
     df_final = df_final.melt(value_name="images")
@@ -55,10 +57,10 @@ def prepare_data(num_images: int):
             else:
                 class_dict[key].append(value)
 
-    if image_load_count != False:
+    if image_load_count:
         idxs = df_final.index.to_list()
         delete_before = idxs[:(start_from_image)]
-        delete_after = idxs[(start_from_image + image_load_count) :]
+        delete_after = idxs[(start_from_image + image_load_count):]
 
         df_final.drop(delete_after, axis=0, inplace=True)
         df_final.drop(delete_before, axis=0, inplace=True)
@@ -79,7 +81,7 @@ preprocess = transforms.Compose(
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
     ]
 )
 
@@ -93,4 +95,6 @@ class FoodDataset(Dataset):
         return len(self.images.index)
 
     def __getitem__(self, idx):
-        return preprocess(load_image(self.images.iloc[idx])), self.labels.iloc[idx]
+        image_loaded = preprocess(load_image(self.images.iloc[idx]))
+        label = self.labels.iloc[idx]
+        return image_loaded, label

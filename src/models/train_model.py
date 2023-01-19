@@ -1,5 +1,4 @@
 import os
-import sys
 from pathlib import Path
 
 import timm
@@ -8,9 +7,7 @@ from torch.optim import Adam
 from torch.profiler import ProfilerActivity, profile, tensorboard_trace_handler
 from torch.utils.data import DataLoader
 
-data_path = os.path.join(os.path.dirname(__file__), "../features")
-sys.path.append(os.path.abspath(data_path))
-from build_features import FoodDataset, prepare_data
+from src.features.build_features import FoodDataset, prepare_data
 
 dir_root = Path(__file__).parent.parent.parent
 print(dir_root)
@@ -47,7 +44,12 @@ def compute_validation_metrics(model, dataloader):
 # @click.option("--num_images",default=100, help="Number of images to use")
 # @click.option("--save_model",default=False, help="Define if model should be saved (False=not save; True=save)")
 def main(
-    mdl="resnet18", batch_size=64, epochs=10, lr=1e-3, num_images=100, save_model=True
+    mdl="resnet18",
+    batch_size=64,
+    epochs=10,
+    lr=1e-3,
+    num_images=100,
+    save_model=True
 ):
     """ Trains a neural network from the TIMM framework"""
 
@@ -99,12 +101,13 @@ def main(
             )
         )
         # prof.step()
-    if save_model == True:
+    if save_model:
+        pth = f"models/model_epochs{epochs}_lr{lr}_batch_size{batch_size}.pth"
         torch.save(
             model.state_dict(),
             os.path.join(
                 dir_root,
-                f"models/model_epochs{epochs}_lr{lr}_batch_size{batch_size}.pth",
+                pth,
             ),
         )
 
@@ -118,11 +121,11 @@ def main(
 
 if __name__ == "__main__":
 
-    if with_profile == True:
+    if with_profile:
         with profile(
             activities=[ProfilerActivity.CPU],
             record_shapes=True,
-            on_trace_ready=tensorboard_trace_handler(f"./log/model"),
+            on_trace_ready=tensorboard_trace_handler("./log/model"),
         ) as prof:
             main(epochs=2)
         print(

@@ -6,8 +6,8 @@ from torchvision import models, transforms
 
 # load model
 dir_root = Path(__file__).parent.parent.parent
-model_path = Path(dir_root, "./models/model_epochs10_lr1000.0_batch_size64.pth")
-image_path = Path(dir_root, "./data/processed/images/apple_pie/3670548.jpg")
+model_pth = Path(dir_root, "./models/model_epochs10_lr1000.0_batch_size64.pth")
+image_pth = Path(dir_root, "./data/processed/images/apple_pie/3670548.jpg")
 dataset_raw_classes = Path(dir_root, "./data/processed/meta/classes.txt")
 
 
@@ -33,10 +33,7 @@ class_dict = load_class_dict(dataset_raw_classes)
 model = models.resnet18(pretrained=True)
 num_ftrs = model.fc.in_features
 model.fc = torch.nn.Linear(num_ftrs, 101)
-model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
-
-# model = models.resnet18(pretrained=True)
-# model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+model.load_state_dict(torch.load(model_pth, map_location=torch.device("cpu")))
 
 model.eval()
 
@@ -51,7 +48,7 @@ transform = transforms.Compose(
 )
 
 # open image and transform
-img = Image.open(image_path)
+img = Image.open(image_pth)
 img_tensor = transform(img).unsqueeze(0)
 
 # run inference
@@ -63,5 +60,6 @@ _, pred = output.max(1)
 
 # print class label
 pred_label = pred.item()
-object_name = list(class_dict.keys())[list(class_dict.values()).index(pred_label)]
+index_key = list(class_dict.values()).index(pred_label)
+object_name = list(class_dict.keys())[index_key]
 print(object_name)

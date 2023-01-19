@@ -1,16 +1,9 @@
 import os
-import sys
 
 import pytest
 import torch
 
-data_path = os.path.join(os.path.dirname(__file__), "../features")
-sys.path.append(os.path.abspath(data_path))
-
-
-# Import the data module
-
-from build_features import FoodDataset, prepare_data
+from src.features.build_features import FoodDataset, prepare_data
 
 
 @pytest.mark.skipif(
@@ -40,7 +33,7 @@ def test_data():
         bool and (image.shape == torch.Size([3, 224, 224]))
     assert bool, "The images don't have the right format"
 
-    # assert that we have the right number of labels compared to the number of imported images
+    # assert that we have the right number of labels
 
     labels_set = set()
     for _, label in train_dataset:
