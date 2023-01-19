@@ -192,7 +192,7 @@ We used DVC mainly for a matter of simplyfying the data management process. In r
 >
 > Answer:
 
---- question 11 fill here ---
+--- question 11 fill here --- César
 
 ## Running code and tracking experiments
 
@@ -243,7 +243,7 @@ We didn't use any config files, as we had a slightly different approach to train
 >
 > Answer:
 
---- question 14 fill here ---
+--- question 14 fill here --- Artur (writting) + Lucas (picture)
 
 ### Question 15
 
@@ -258,7 +258,7 @@ We didn't use any config files, as we had a slightly different approach to train
 >
 > Answer:
 
---- question 15 fill here ---
+--- question 15 fill here --- Lucas
 
 ### Question 16
 
@@ -273,7 +273,7 @@ We didn't use any config files, as we had a slightly different approach to train
 >
 > Answer:
 
---- question 16 fill here ---
+--- question 16 fill here --- Artur
 
 ## Working in the cloud
 
@@ -290,14 +290,7 @@ We didn't use any config files, as we had a slightly different approach to train
 >
 > Answer:
 
-Cloud storage buckets: This is used to store relevant data for your project this will most likely include models and training data. 
-
-Compute Engine: Compute engines have multiple purposes, it can be used as a working enviorment for developing purposes but also to run multiple VM's in parallel. The VM's also have the option to run on either CPU or GPU which have different advantages. 
-
-Cloud build: Cloud build can be used to connect a git repository to thus creating updated version of images as the code updates. These images are then stores inside the container registry.
-
-Monitoring: Even though monitoring is a fairly new concept within machine learning it is relevant to keep track of essential features when both training and deploying the model. 
-
+Cloud storage buckets: This is used to store relevant data for your project this will most likely include models and training data. Compute Engine: Compute engines have multiple purposes, it can be used as a working enviorment for developing purposes but also to run multiple VM's in parallel. The VM's also have the option to run on either CPU or GPU which have different advantages. Cloud build: Cloud build can be used to connect a git repository to thus creating updated version of images as the code updates. These images are then stores inside the container registry. Monitoring: Even though monitoring is a fairly new concept within machine learning it is relevant to keep track of essential features when both training and deploying the model. 
 
 ### Question 18
 
@@ -312,8 +305,7 @@ Monitoring: Even though monitoring is a fairly new concept within machine learni
 >
 > Answer:
 
-The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions.
-If we had more money we would have setup multiple VM's using GPUs to train the model faster. So for this project and to illustrate that we understand the purpose we simply used the standard hardware which is: 1-2 vCPU and 4 GB memory. The VM was also created using a standard pytorch image.  
+The compute engine was made used to actually train the model. Combining the VM's with tmux its possible to let the training run over night and in with parralel sessions. If we had more money we would have setup multiple VM's using GPUs to train the model faster. So for this project and to illustrate that we understand the purpose we simply used the standard hardware which is: 1-2 vCPU and 4 GB memory. The VM was also created using a standard pytorch image.  
 
 ### Question 19
 
@@ -356,7 +348,7 @@ The GCP cloud build history can be seen here: [this figure](figures/our_build.pn
 >
 > Answer:
 
-We manges to deploy the model but only locally. The API which was created simply uses an image as an input and then using our trained model will output the food type which it think it is. It was intented to get the model deployed to the cloud, but it showed to be a fairly diffuc
+We manges to deploy the model but only locally. The API which was created simply uses an image as an input and then using our trained model will output the food type which it think it is. It was intented to get the model deployed to the cloud, but it showed to be a fairly difficult task for us. 
 
 ### Question 23
 
@@ -371,7 +363,7 @@ We manges to deploy the model but only locally. The API which was created simply
 >
 > Answer:
 
---- question 23 fill here ---
+--- question 23 fill here --- Artur
 
 ### Question 24
 
@@ -385,7 +377,7 @@ We manges to deploy the model but only locally. The API which was created simply
 >
 > Answer:
 
---- question 24 fill here ---
+--- question 24 fill here --- Lucas
 
 ## Overall discussion of project
 
@@ -406,7 +398,7 @@ We manges to deploy the model but only locally. The API which was created simply
 >
 > Answer:
 
---- question 25 fill here ---
+--- question 25 fill here ---  Artur (writting) + Lucas (picture)
 
 ### Question 26
 
@@ -420,7 +412,7 @@ We manges to deploy the model but only locally. The API which was created simply
 >
 > Answer:
 
---- question 26 fill here ---
+--- question 26 fill here --- All write about it
 
 ### Question 27
 
@@ -437,4 +429,4 @@ We manges to deploy the model but only locally. The API which was created simply
 >
 > Answer:
 
---- question 27 fill here ---
+--- question 27 fill here --- Artur (data, dvc, model, train, wandb), César (model train, unit tests, continous integration), Lucas (GCP, docker, deployment) - Artur will write
