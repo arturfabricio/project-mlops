@@ -60,13 +60,16 @@ Project Organization
     │   ├── features       <- Scripts to turn raw data into features for modeling
     │   │   └── build_features.py
     │   │
-    │   └── models         <- Scripts to train models and then use trained models to make
-    │       │                 predictions
-    │       ├── predict_model.py
-    │       ├── train_model.py
-    │       └── sweep_model.py
-    │   
-    │  
+    │   ├── models         <- Scripts to train models and then use trained models to make
+    │   │    │                 predictions
+    │   │    ├── predict_model.py
+    │   │    ├── train_model.py
+    │   │    └── sweep_model.py
+    │   │
+    │   └─ tests           <- Scripts for the unit tests        
+    │        ├── test_data.py
+    │        ├── test_train.py
+    │        └── test_model.py
     │       
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
