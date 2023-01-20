@@ -8,8 +8,9 @@ RUN apt update && \
 COPY requirements.txt requirements.txt
 COPY src/ src/
 WORKDIR /
-RUN pip install -r requirements.txt --no-cache-dir && \
-    pip install -e .
+RUN pip install -r requirements.txt --no-cache-dir
+# RUN pip install -r requirements.txt --no-cache-dir && \
+#     pip install -e .
 
 ENTRYPOINT ["python", "-u", "src/models/train_model.py"]
 
