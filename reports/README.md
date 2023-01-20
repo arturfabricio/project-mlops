@@ -402,9 +402,7 @@ Lucas used: 21.97 credits, Artur used: 6.81 credits and César used: 1.44 credit
 >
 > Answer:
 
---- question 25 fill here ---  Artur (writting) + Lucas (picture) - 
-
-Lucas, I haven't written cause I think I need to look at the image you will make, so I'll do it either today or tomorrow before the exam. -A
+An overview of our overall architecture can be seen here. We can start by explaining that we extensivily use GCP in this project: Data Version Control (DVC) is performed on data stored in a Google Cloud Bucket; the training is performed in virtual machines (VM's) in GCP, and deployment is also performed using Cloud Functions. In terms of version control, we use GitHub. Everytime we commit, unit tests are auto triggered using GitHub actions, ensuring our code is compliant with whatever parameters tested in the unit tests. Furthermore, we also take advantage of Weights and Biases to perform hyperparameter sweeps to determine what are the most adequate hyperparameters. Weights and Biases is also used as a logging tool, which saves the results of the training process, in variables such as test/val accuracy, test/val loss, etc., as well as the overall use of hardware elements for the training of the model. From a User perspective, one can easily pull the latest version of the code, and use the latest Docker image available. Furthermore, deployment is relatively simple as well, as we have cloud functions that allow to deploy the code (for now this is not on the cloud but merely local).
 
 ### Question 26
 
