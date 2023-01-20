@@ -10,4 +10,9 @@ How to setup environment and requirements:
 
 
 Test API: 
-curl -X POST -F "image_file=@data\processed\images\gyoza\6276.jpg" http://localhost:8000/predict/
+curl -X POST -F "image_file=@data\processed\images\churros\1601.jpg" http://localhost:8000/predict/
+
+DOCKER: 
+
+docker build -f inference.dockerfile . -t inference:latest
+docker run --name experiment1 inference:latest

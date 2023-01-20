@@ -11,7 +11,7 @@ RUN pip install torch torchvision numpy Pillow
 COPY src/ src/
 COPY models/model_epochs10_lr1000.0_batch_size64.pth models/model_epochs10_lr1000.0_batch_size64.pth
 COPY data/processed/meta/classes.txt data/processed/meta/classes.txt
-COPY data/processed/images/apple_pie/3670548.jpg data/processed/images/apple_pie/3670548.jpg
+COPY data/processed/images/churros/1601.jpg data/processed/images/apple_pie/3670548.jpg
 
 WORKDIR /
 
