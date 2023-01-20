@@ -243,7 +243,7 @@ We didn't use any config files, as we had a slightly different approach to train
 >
 > Answer:
 
-The major use we gave to Weights and Biases (wandb) was on the aspect of performing an hyperparameter sweep, as seen [in this figure](figures/our_sweep.png). We aimed at using wandb to determine what were the optimal set of hyperparameters, namely, number of epochs, learning rate, and batch size, that would maximized the obtained validation accuracy obtained in the training process. It should be noted that as you can see in the aforementioned picture, all the sets of hyperparameters maximized the validation accuracy to 100%. This is because the model here is training on a very small set of images (400), so the model overfitted greatly. This is because we didn't have time as well as GCP credits to train the model with the full 101000 images of the datatset. None the less, this exemplifies an implementation of the hyperparameter sweep functionality of wandb in our code. Furthermore, we also logged several other parameters, such as graphs for the validation and accuracy loss and accuracy, which are also relevant indicatiors of the training process. This can be observed [here](figures/our_loss_acc.png). Furthermore, one more logging capibility of wandb is to be able to record system parameters, as seen [here](figures/our_system.png). These give us an insight into the GPU performance (if one is being used) in the form of Memory Allocated, Temperature, etc. 
+The major use we gave to Weights and Biases (wandb) was on the aspect of performing an hyperparameter sweep, as seen [in this figure](figures/our_sweep.png). We aimed at using wandb to determine what were the optimal set of hyperparameters, namely, number of epochs, learning rate, and batch size, that would maximized the obtained validation accuracy obtained in the training process. It should be noted that as you can see in the aforementioned picture, all the sets of hyperparameters maximized the validation accuracy to 100%. This is because the model here is training on a very small set of images (400), so the model overfitted greatly. This is because we didn't have time as well as GCP credits to train the model with the full 101000 images of the datatset. None the less, this exemplifies an implementation of the hyperparameter sweep functionality of wandb in our code. Furthermore, we also logged several other parameters, such as graphs for the validation and accuracy loss and accuracy, which are also relevant indicatiors of the training process. This can be observed [here](figures/our_loss_acc.png). Furthermore, one more logging capibility of wandb is to be able to record system parameters, as seen [here](figures/our_system.png). These give us an insight into the GPU performance (if one is being used) in the form of Memory Allocated, Temperature, etc. --- question 14 fill here --- Artur (writting - DONE) + Lucas (picture)
 
 ### Question 15
 
@@ -260,6 +260,10 @@ The major use we gave to Weights and Biases (wandb) was on the aspect of perform
 
 The docker images were created for both training and inference. Since our dataset is as big as it is we had to exclude the day from the docker image which needs to be downloaded seperatly. For the training it simply just made it run the train script where the parameters are set within the python file. We figured that it would make the most sence to use weights and biases for now to calculate the best hyper parameters and then train it. The inference dockerfile simply just prints whatever food type the model think it is given an image.png which is given insde the image. For future implmentations it would ne nice to have some sort of automated pipeline which is able to train from the images given the latest best hyper parameters from Weight and Biases. Also being able to give inputs to the docker file so you could test the inference on different images. 
 
+
+--- question 15 fill here --- 
+
+
 ### Question 16
 
 > **When running into bugs while trying to run your experiments, how did you perform debugging? Additionally, did you**
@@ -273,7 +277,7 @@ The docker images were created for both training and inference. Since our datase
 >
 > Answer:
 
-When it cames to debugging, we all used the good old method of printing. To be fair we did encounter many bugs in the code, so it all went quite smoothly on this end. In regards to profiling the code, we actually did use the PyTorch profiler, implemented in a way very similar to what we did in the exercises. You can see the implementations in src/models/train_model.py. We did not spend much time looking into this, we did a simple run, where we were able to see that the conv layers and the backward pass were the operations that were taking the longest in average, which is what we expected.
+When it cames to debugging, we all used the good old method of printing as well as the VSC debugger. To be fair we did encounter many bugs in the code, so it all went quite smoothly on this end. In regards to profiling the code, we actually did use the PyTorch profiler, implemented in a way very similar to what we did in the exercises. You can see the implementations in src/models/train_model.py. We did not spend much time looking into this, we did a simple run, where we were able to see that the conv layers and the backward pass were the operations that were taking the longest in average, which is what we expected.
 
 ## Working in the cloud
 
@@ -348,7 +352,7 @@ The GCP cloud build history can be seen here: [this figure](figures/our_build.pn
 >
 > Answer:
 
-We manges to deploy the model but only locally. The API which was created simply uses an image as an input and then using our trained model will output the food type which it think it is It was intented to get the model deployed to the cloud, but it showed to be a fairly difficult task for us. A common error we got was "Function failed on loading user code. This is likely due to a bug in the user code". Which is not very specific and fairly difficult to debug when the deployment works locally. To get acces to our service the user would have to write either: curl -X POST -F "image_file=@path\to\file.jpg" http://localhost:8000/predict/. Run the python script called "apitest.py". Which uses the requst libary to access the API. or simply use the following link: http://localhost:8000/docs, which usesa a simple FastAPI user interface to test the API. 
+We managed to deploy the model but only locally. The API which was created simply uses an image as an input and then, using our trained model, outputs the food type which it thinks is represented. It was intented to get the model deployed to the cloud, but it showed to be a fairly difficult task for us. A common error we got was "Function failed on loading user code". This is likely due to a bug in the user code". Which is not very specific and fairly difficult to debug when the deployment works locally. To get acces to our service the user would have to write either: curl -X POST -F "image_file=@path\to\file.jpg" http://localhost:8000/predict/. Run the python script called "apitest.py". Which uses the requst libary to access the API. or simply use the following link: http://localhost:8000/docs, which uses a simple FastAPI user interface to test the API. 
 
 ### Question 23
 
@@ -363,7 +367,7 @@ We manges to deploy the model but only locally. The API which was created simply
 >
 > Answer:
 
-We did implement monitoring in the form of an alert that would notify us if the number of bytes in ingested log entries went over 1. This was not particularly useful, and was done mainly to test the implementation of a telemtry alert in our project. In another context, we believe we could have set up monitoring on other more meaningful aspects. These could be, for example, an alert on the sent bytes of our GCS Bucket where our data is stored, hinting at the fact someone might be downloading, or perhaps, set up an alert on the Uptime of a VM instace - this could be particularly useful in the case of GCS, due to the use of credits to run virtual machines. 
+We did implement monitoring in the form of an alert that would notify us if the number of bytes in ingested log entries went over 1. This was not particularly useful, and was done mainly to test the implementation of a telemetry alert in our project. In another context, we believe we could have set up monitoring on other more meaningful aspects. These could be, for example, an alert on the sent bytes of our GCS Bucket where our data is stored, hinting at the fact someone might be downloading, or perhaps, set up an alert on the Uptime of a VM instace - this could be particularly useful in the case of GCS, due to the use of credits to run virtual machines. 
 
 ### Question 24
 
@@ -377,7 +381,7 @@ We did implement monitoring in the form of an alert that would notify us if the 
 >
 > Answer:
 
-Lucas used: 21.97 credits, Artur used: 6.81 credits and César used: ??. The credits were spent during development mainly due to the testing and training inside the VM's. 
+Lucas used: 21.97 credits, Artur used: 6.81 credits and César used: 1.44 credits. The credits were spent during development mainly due to the testing and training inside the VM's. 
 
 ## Overall discussion of project
 
@@ -398,7 +402,9 @@ Lucas used: 21.97 credits, Artur used: 6.81 credits and César used: ??. The cre
 >
 > Answer:
 
-An overview of our overall architecture can be seen [here](figures/our_overview.png). We can start by explaining that we extensivily use GCP in this project: Data Version Control (DVC) is performed on data stored in a Google Cloud Bucket; the training is performed in virtual machines (VM's) in GCP, and deployment is also performed using Cloud Functions. In terms of version control, we use GitHub. Everytime we commit, unitests are auto triggered using GitHub actions, ensuring our code is compliant with whatever parameters tested in the unittests. Furthermore, we also take advantage of Weights and Biases to perform hyperparameter sweeps to determine what are the most adequate hyperparameters. Weights and Biases is also used as a logging tool, which saves the results of the training process, in variables such as test/val accuracy, test/val loss, etc., as well as the overall use of hardware elements for the training of the model. From a User perspective, one can easily pull the latest version of the code, and use the latest Docker image available. Furthermore, deployment is relatively simple as well, as we have cloud functions that allow to deploy the code (for now this is not on the cloud but merely local ADD EXTRA EXPLANATiON HERE).
+--- question 25 fill here ---  Artur (writting) + Lucas (picture) - 
+
+Lucas, I haven't written cause I think I need to look at the image you will make, so I'll do it either today or tomorrow before the exam. -A
 
 ### Question 26
 
@@ -412,7 +418,9 @@ An overview of our overall architecture can be seen [here](figures/our_overview.
 >
 > Answer:
 
-One of the challenges we initially faced in the project was setting up DVC, since we initially set everything up on Google Drive, which was a mess as each of us had to log into one Google account to have the permissions to access the data. Furthermore, we initially couldn't even get DVC to work in Google Drive at all. Despite this, we solved the issue by migrating our data to a GCS Bucket, and making the bucket public, which made it easy for everyone to access it. We initially also struggled a bit with implementing the Weights and Biases features on the code (just as we had on the exercises). We then figured that the order where in which we call each wandb command is crucial for the features to work, so we eventually fixed the issue. Docker, GCP and deployment were all somewhat new areas for all of us which made some part quite a big challenge, and also led to some unfinished parts. Getting the cloud functions to work was definitly the biggest challenge, never having done any deployment before it made it a bit hard to just get it done locally. Even though there are alot of logs to look at for the cloud functoin for debugging it would often give a very unspecific error which is hard to debug without experience. It was also a bit of mess understanding the pipeline for the docker building and pushing. We had problems getting multiple triggers to work at the same time which lead to only one trigger active for the training and the the inference not. 
+One of the challenges we initially faced in the project was setting up DVC, since we initially set everything up on Google Drive, which was a mess as each of us had to log into one Google account to have the permissions to access the data. Furthermore, we initially couldn't even get DVC to work in Google Drive at all. Despite this, we solved the issue by migrating our data to a GCS Bucket, and making the bucket public, which made it easy for everyone to access it. We initially also struggled a bit with implementing the Weights and Biases features on the code (just as we had on the exercises). We then figured that the order where in which we call each wandb command is crucial for the features to work, so we eventually fixed the issue. (add more guys)
+
+Docker, GCP and deployment were all somewhat new areas for all of us which made some part quite a big challenge, and also led to some unfinished parts. Getting the cloud functions to work was definitly the biggest challenge, never having done any deployment before it made it a bit hard to just get it done locally. Even though there are alot of logs to look at for the cloud functoin for debugging it would often give a very unspecific error which is hard to debug without experience. It was also a bit of mess understanding the pipeline for the docker building and pushing. We had problems getting multiple triggers to work at the same time which lead to only one trigger active for the training and the the inference not. 
 
 ### Question 27
 
