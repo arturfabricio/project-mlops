@@ -258,10 +258,8 @@ The major use we gave to Weights and Biases (wandb) was on the aspect of perform
 >
 > Answer:
 
-The docker images were created for both training and inference. Since our dataset is as big as it is we had to exclude the day from the docker image which needs to be downloaded seperatly. For the training it simply just made it run the train script where the parameters are set within the python file. We figured that it would make the most sence to use weights and biases for now to calculate the best hyper parameters and then train it. The inference dockerfile simply just prints whatever food type the model think it is given an image.png which is given insde the image. For future implmentations it would ne nice to have some sort of automated pipeline which is able to train from the images given the latest best hyper parameters from Weight and Biases. Also being able to give inputs to the docker file so you could test the inference on different images. 
+We created a Docker image for both training and inference. Initially, the idea was to use the image for Vertex AI training, but it didn't work out due to the large dataset we had and the use of DVC. As a result, the image took too long to compile and often failed. To resolve this, we modified the training image to work with locally stored data instead of DVC format. The image can be used without any additional parameters, as we used Weights and Biases to optimize the hyperparameters. For inference, we simply loaded a "real" image within the Docker image for the model to predict the food type. In future implementations, it would be beneficial for users to be able to upload their own images. The inference image can be run with the command "docker run --name experiment1 inference:latest". <https://github.com/arturfabricio/project-mlops/blob/main/inference.dockerfile>
 
-
---- question 15 fill here --- 
 
 
 ### Question 16
