@@ -10,6 +10,7 @@ How to setup environment and requirements:
 
 
 Test API: 
+uvicorn --reload --port 8000 api:app
 curl -X POST -F "image_file=@data\processed\images\churros\1601.jpg" http://localhost:8000/predict/
 
 DOCKER: 
